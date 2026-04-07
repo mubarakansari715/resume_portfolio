@@ -151,30 +151,55 @@ function HR() {
 function DotGridBg() {
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-      {/* Dot grid layer */}
+
+      {/* Animated dot grid — slowly drifts */}
       <div style={{
-        position: "absolute", inset: 0,
-        backgroundImage: `radial-gradient(${V}28 1px, transparent 1px)`,
+        position: "absolute", inset: "-28px",   // slightly oversized so drift doesn't show edges
+        backgroundImage: `radial-gradient(${V}25 1px, transparent 1px)`,
         backgroundSize: "28px 28px",
+        animation: "driftGrid 12s ease-in-out infinite",
       }} />
-      {/* Vignette — fades the grid toward edges for depth */}
+
+      {/* Vignette — keeps edges clean */}
       <div style={{
         position: "absolute", inset: 0,
-        background: `radial-gradient(ellipse 80% 80% at 50% 40%, transparent 35%, ${T.bg} 100%)`,
+        background: `radial-gradient(ellipse 80% 80% at 50% 40%, transparent 30%, ${T.bg} 100%)`,
       }} />
-      {/* Subtle violet glow top-center */}
+
+      {/* Violet orb — top-left, slow float */}
       <div style={{
-        position: "absolute", width: "60%", height: "50%",
-        top: 0, left: "20%",
-        background: `radial-gradient(ellipse, ${V}0d 0%, transparent 70%)`,
-        filter: "blur(60px)",
+        position: "absolute", width: "55%", height: "55%",
+        top: "-5%", left: "10%",
+        background: `radial-gradient(ellipse, ${V}12 0%, transparent 70%)`,
+        filter: "blur(72px)",
+        animation: "orbA 14s ease-in-out infinite",
       }} />
-      {/* Subtle cyan glow bottom-right */}
+
+      {/* Cyan orb — bottom-right, opposite phase */}
       <div style={{
-        position: "absolute", width: "40%", height: "40%",
-        bottom: "5%", right: 0,
-        background: `radial-gradient(ellipse, ${C}09 0%, transparent 70%)`,
+        position: "absolute", width: "45%", height: "45%",
+        bottom: "0%", right: "-5%",
+        background: `radial-gradient(ellipse, ${C}0e 0%, transparent 70%)`,
+        filter: "blur(64px)",
+        animation: "orbB 18s ease-in-out infinite",
+      }} />
+
+      {/* Violet orb — mid-left, slow pulse */}
+      <div style={{
+        position: "absolute", width: "30%", height: "35%",
+        top: "45%", left: "-5%",
+        background: `radial-gradient(ellipse, ${V}09 0%, transparent 70%)`,
+        filter: "blur(55px)",
+        animation: "orbA 22s ease-in-out infinite reverse",
+      }} />
+
+      {/* Cyan orb — top-right accent */}
+      <div style={{
+        position: "absolute", width: "25%", height: "30%",
+        top: "5%", right: "5%",
+        background: `radial-gradient(ellipse, ${C}08 0%, transparent 70%)`,
         filter: "blur(50px)",
+        animation: "orbB 16s ease-in-out infinite reverse",
       }} />
     </div>
   );
@@ -570,6 +595,9 @@ export default function Home() {
         @keyframes blink       { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes statusPulse { 0%,100%{box-shadow:0 0 5px #22c55e} 50%{box-shadow:0 0 12px #22c55e} }
         @keyframes scrollDown  { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
+        @keyframes driftGrid   { 0%,100%{transform:translate(0,0)} 33%{transform:translate(7px,5px)} 66%{transform:translate(-5px,8px)} }
+        @keyframes orbA        { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(40px,30px) scale(1.08)} 70%{transform:translate(15px,50px) scale(0.95)} }
+        @keyframes orbB        { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-35px,-25px) scale(1.06)} 65%{transform:translate(-10px,30px) scale(0.97)} }
 
         /* ── Nav ── */
         .desk{display:flex!important} .mob{display:none!important}
