@@ -19,13 +19,14 @@ const SKILLS = [
   { label: "Kotlin", pct: 93, color: "#a78bfa" },
   { label: "Java", pct: 85, color: "#fb923c" },
   { label: "Jetpack Compose", pct: 80, color: "#34d399" },
-  { label: "MVVM / Clean Architecture", pct: 92, color: "#38bdf8" },
-  { label: "Dagger Hilt (DI)", pct: 85, color: "#f472b6" },
-  { label: "Firebase & Crashlytics", pct: 88, color: "#facc15" },
-  { label: "RESTful APIs & WebSockets", pct: 90, color: "#a78bfa" },
-  { label: "Room DB & Coroutines", pct: 87, color: "#38bdf8" },
-  { label: "CI/CD (Fastlane / Bitrise)", pct: 75, color: "#34d399" },
-  { label: "JUnit & Performance Profiling", pct: 78, color: "#fb923c" },
+  { label: "React Native", pct: 72, color: "#38bdf8" },
+  { label: "MVVM / Clean Architecture", pct: 92, color: "#f472b6" },
+  { label: "Dagger Hilt (DI)", pct: 85, color: "#facc15" },
+  { label: "Firebase & Crashlytics", pct: 88, color: "#a78bfa" },
+  { label: "RESTful APIs & WebSockets", pct: 90, color: "#38bdf8" },
+  { label: "Room DB & Coroutines", pct: 87, color: "#34d399" },
+  { label: "CI/CD (Fastlane / Bitrise)", pct: 75, color: "#fb923c" },
+  { label: "JUnit & Performance Profiling", pct: 78, color: "#f472b6" },
 ];
 
 const EXPERIENCE = [
@@ -66,32 +67,61 @@ const PROJECTS = [
     tag: "Professional & Social Connection",
     color: "#a78bfa",
     icon: "🔗",
-    tech: ["Kotlin", "Jetpack Compose", "Firebase Analytics", "JUnit", "Azure DevOps"],
-    desc: "Platform connecting professionals across industries. Built core features with Kotlin + Jetpack Compose (MVVM), implemented OTP auto-detection, Firebase Crashlytics, Analytics, and published on Google Play Store.",
+    tech: ["Kotlin", "Jetpack Compose", "MVVM", "Firebase Analytics", "JUnit", "Azure DevOps"],
+    desc: "Designed to create meaningful connections between professionals and social users across IT, digital marketing, and related industries. Built core features with Kotlin + Jetpack Compose (MVVM), implemented OTP auto-SMS detection, integrated Firebase & Google Analytics, Crashlytics, wrote JUnit tests, and published on Google Play Store.",
+    points: [
+      "Developed core features using Kotlin and Jetpack Compose following MVVM architecture.",
+      "Implemented OTP verification with automatic SMS detection for seamless authentication.",
+      "Integrated Firebase Analytics and Google Analytics to track user behavior.",
+      "Implemented Firebase Crashlytics for real-time crash monitoring.",
+      "Wrote JUnit unit tests to validate business logic and improve reliability.",
+      "Published and maintained the application on Google Play Store.",
+    ],
   },
   {
     name: "Seeking App",
     tag: "Luxury Dating Platform",
     color: "#f472b6",
     icon: "💎",
-    tech: ["Kotlin", "Clean Architecture", "Fragments", "Jira"],
-    desc: "Luxury dating app. Migrated legacy Activities to Fragments, implemented Clean Architecture, optimised performance, redesigned UI screens, and managed bug tracking via Jira.",
+    tech: ["Kotlin", "Clean Architecture", "Fragments", "Performance Optimization", "Jira"],
+    desc: "A luxury dating platform connecting people who value success, attractiveness, and ambition. Migrated legacy Activities to Fragment-based architecture with Clean Architecture, developed new feature modules, optimised performance, redesigned multiple UI screens, and managed bug tracking via Jira.",
+    points: [
+      "Developed new modules and implemented feature enhancements.",
+      "Implemented Clean Architecture to improve maintainability and scalability.",
+      "Migrated legacy Activities to Fragment-based architecture.",
+      "Optimized application performance and reduced code complexity.",
+      "Redesigned UI screens to improve user experience.",
+    ],
   },
   {
     name: "IRA Financial",
     tag: "Self-Directed Retirement App",
     color: "#818cf8",
     icon: "💰",
-    tech: ["Kotlin", "Firebase", "Fingerprint Auth", "WebView"],
-    desc: "Retirement account management app. Monitored Firebase crash reports daily, implemented fingerprint authentication, resolved WebView performance issues, and managed Play Store publishing.",
+    tech: ["Kotlin", "Firebase", "Fingerprint Auth", "WebView", "Play Store"],
+    desc: "Android app for IRA Financial — a leading provider of self-directed retirement products — enabling clients to establish and maintain retirement accounts on mobile. Monitored Firebase crash reports daily, implemented fingerprint authentication, resolved WebView performance issues, and managed Play Store publishing.",
+    points: [
+      "Monitored Firebase crash reports daily to ensure app stability.",
+      "Resolved bugs affecting users to ensure a smoother experience.",
+      "Implemented fingerprint authentication support.",
+      "Collaborated with client on app publishing and requested changes.",
+      "Optimized performance and resolved WebView-related issues.",
+    ],
   },
   {
     name: "AlokozayShop",
     tag: "Grocery E-commerce",
     color: "#34d399",
     icon: "🛒",
-    tech: ["Kotlin", "WebEngage", "Huawei SDK", "Sentry", "Firebase", "Azure DevOps"],
-    desc: "One-stop grocery delivery app. Integrated WebEngage and Huawei Analytics, added Huawei SDK for push notifications and maps, implemented Sentry for error detection, and added multi-screen (mobile/tablet) support.",
+    tech: ["Kotlin", "WebEngage", "Huawei SDK", "Sentry", "Firebase", "Google Analytics", "Azure DevOps"],
+    desc: "One-stop grocery delivery app covering food, beverages, and daily essentials. Integrated WebEngage, Firebase & Huawei Analytics, added Huawei SDK for push notifications and maps, implemented Sentry for error detection, and added multi-screen (mobile/tablet) support.",
+    points: [
+      "Added WebEngage for user activity tracking and engagement analytics.",
+      "Implemented multi-screen support for mobile and tablet form factors.",
+      "Added Huawei SDK for push notifications, search, and maps.",
+      "Integrated Firebase, Google Analytics, and Huawei Analytics.",
+      "Added Sentry for error detection and performance monitoring.",
+    ],
   },
   {
     name: "The Weed Tube",
@@ -99,15 +129,28 @@ const PROJECTS = [
     color: "#fb923c",
     icon: "🎬",
     tech: ["Java", "Kotlin", "Dark/Light Theme", "Firebase", "Azure DevOps"],
-    desc: "YouTube-style video sharing platform. Integrated Dark/Light themes, Firebase Crashlytics & notifications, rebuilt UI screens, and handled bug resolution via Azure DevOps.",
+    desc: "YouTube-style video sharing platform where users share videos, interact globally, and engage via likes, dislikes, shares, and reports. Integrated Dark/Light themes, Firebase Crashlytics, push notifications, rebuilt UI screens, and resolved Azure DevOps tracked bugs.",
+    points: [
+      "Integrated Dark/Light theme support across the application.",
+      "Added Firebase Crashlytics and app performance monitoring.",
+      "Implemented Firebase push notifications.",
+      "Redesigned app UI for improved user experience.",
+      "Handled Azure DevOps bug tracking and task management.",
+    ],
   },
   {
     name: "Book My Table",
     tag: "Restaurant Table Booking",
     color: "#38bdf8",
     icon: "🍽️",
-    tech: ["Java", "Kotlin", "Firebase", "REST API"],
-    desc: "Pre-book restaurant tables for parties and meetings with custom requirements (lighting, cake, etc.). Handled full Android development, Firebase Crashlytics, push notifications, and API integration.",
+    tech: ["Java", "Kotlin", "Firebase", "Push Notifications", "REST API"],
+    desc: "Restaurant table booking app allowing users to pre-book tables for parties and meetings at a specific time, day, and date — with custom instructions such as lighting and cake preferences. Handled full Android development, Firebase Crashlytics, push notifications, and REST API integration.",
+    points: [
+      "Led Android-side app development and maintenance.",
+      "Integrated Firebase Crashlytics for stability monitoring.",
+      "Implemented Firebase push notifications.",
+      "Handled REST API integration and developer testing.",
+    ],
   },
 ];
 
@@ -319,7 +362,7 @@ export default function Home() {
           {/* Badge */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(167,139,250,0.1)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 9999, padding: "0.35rem 1rem", marginBottom: "1.75rem", animation: "fadeUp 0.6s ease both" }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px #4ade80", animation: "pulse 2s infinite" }} />
-            <span style={{ fontSize: "0.82rem", color: "#a78bfa", fontWeight: 600 }}>Available for opportunities</span>
+            <span style={{ fontSize: "0.82rem", color: "#a78bfa", fontWeight: 600 }}>Immediate Joiner · Available for Opportunities</span>
           </div>
 
           {/* Name */}
@@ -336,8 +379,8 @@ export default function Home() {
             </span>
           </div>
 
-          <p style={{ color: "#475569", fontSize: "1rem", maxWidth: 560, margin: "0 auto 2.25rem", lineHeight: 1.7, animation: "fadeUp 0.7s ease 0.3s both" }}>
-            5+ years crafting high-quality Android experiences · Kotlin · Jetpack Compose · Clean Architecture · CI/CD
+          <p style={{ color: "#475569", fontSize: "1rem", maxWidth: 640, margin: "0 auto 2.25rem", lineHeight: 1.7, animation: "fadeUp 0.7s ease 0.3s both" }}>
+            Immediate Joiner &nbsp;·&nbsp; Android Developer with 5+ Years of Expertise in Compose, Kotlin &amp; Java &nbsp;·&nbsp; React Native
           </p>
 
           {/* CTA */}
@@ -433,8 +476,22 @@ export default function Home() {
             <div style={{ marginTop: "2.5rem" }}>
               <p style={{ color: "#475569", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.85rem", fontWeight: 600 }}>Tools & Practices</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.55rem" }}>
-                {["Android SDK", "Jetpack Components", "Version Catalog", "Stripe / PayPal", "KtLint", "GitHub Actions", "Fastlane", "Bitrise", "Agile / Scrum", "Azure DevOps", "Jira", "WebEngage", "Huawei SDK", "Sentry", "WebSockets", "Git / GitLab"].map((t) => (
+                {["Android SDK", "React Native", "Jetpack Components", "Version Catalog", "Stripe / PayPal", "KtLint", "GitHub Actions", "Fastlane", "Bitrise", "Agile / Scrum", "Azure DevOps", "Jira", "WebEngage", "Huawei SDK", "Sentry", "WebSockets", "Git / GitLab"].map((t) => (
                   <span key={t} style={{ padding: "0.3rem 0.85rem", borderRadius: 9999, border: "1px solid #1e293b", color: "#64748b", fontSize: "0.82rem", background: "rgba(255,255,255,0.02)", fontWeight: 500 }}>{t}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* AI Tools */}
+            <div style={{ marginTop: "2rem", background: "linear-gradient(135deg, rgba(167,139,250,0.06), rgba(56,189,248,0.04))", border: "1px solid rgba(167,139,250,0.15)", borderRadius: 16, padding: "1.5rem" }}>
+              <p style={{ color: "#a78bfa", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.85rem", fontWeight: 700 }}>🤖 AI Tools</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.55rem" }}>
+                {[
+                  { name: "Cursor", color: "#a78bfa" },
+                  { name: "Claude AI", color: "#f472b6" },
+                  { name: "Antigravity", color: "#38bdf8" },
+                ].map(({ name, color }) => (
+                  <span key={name} style={{ padding: "0.35rem 1rem", borderRadius: 9999, border: `1.5px solid ${color}44`, background: `${color}11`, color, fontSize: "0.85rem", fontWeight: 700 }}>✦ {name}</span>
                 ))}
               </div>
             </div>
@@ -486,22 +543,41 @@ export default function Home() {
         <div style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid #0f172a", borderBottom: "1px solid #0f172a", padding: "5rem 2rem" }}>
           <div style={{ maxWidth: 860, margin: "0 auto" }}>
             <SectionHeading title="Projects" sub="What I've Built" accent="#34d399" />
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px,1fr))", gap: "1.25rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               {PROJECTS.map((p) => (
                 <div key={p.name}
-                  style={{ background: "#0a0a18", border: `1px solid ${p.color}22`, borderRadius: 20, padding: "1.75rem", transition: "transform 0.25s, box-shadow 0.25s, border-color 0.25s", cursor: "default" }}
-                  onMouseEnter={el => { el.currentTarget.style.transform = "translateY(-6px)"; el.currentTarget.style.boxShadow = `0 16px 40px ${p.color}18`; el.currentTarget.style.borderColor = `${p.color}55`; }}
-                  onMouseLeave={el => { el.currentTarget.style.transform = "translateY(0)"; el.currentTarget.style.boxShadow = "none"; el.currentTarget.style.borderColor = `${p.color}22`; }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", marginBottom: "0.6rem" }}>
-                    <span style={{ fontSize: "1.5rem" }}>{p.icon}</span>
-                    <h3 style={{ margin: 0, color: p.color, fontWeight: 800, fontSize: "1.1rem" }}>{p.name}</h3>
+                  style={{ background: "#0a0a18", border: `1px solid ${p.color}22`, borderRadius: 20, padding: "2rem", transition: "box-shadow 0.25s, border-color 0.25s", cursor: "default" }}
+                  onMouseEnter={el => { el.currentTarget.style.boxShadow = `0 12px 40px ${p.color}15`; el.currentTarget.style.borderColor = `${p.color}55`; }}
+                  onMouseLeave={el => { el.currentTarget.style.boxShadow = "none"; el.currentTarget.style.borderColor = `${p.color}22`; }}>
+
+                  {/* Header */}
+                  <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "0.75rem" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                      <span style={{ fontSize: "1.5rem" }}>{p.icon}</span>
+                      <div>
+                        <h3 style={{ margin: 0, color: p.color, fontWeight: 800, fontSize: "1.15rem" }}>{p.name}</h3>
+                        <p style={{ margin: 0, color: "#334155", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{p.tag}</p>
+                      </div>
+                    </div>
+                    {/* Tech pills */}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", alignSelf: "flex-start" }}>
+                      {p.tech.map((t) => (
+                        <span key={t} style={{ padding: "0.2rem 0.65rem", borderRadius: 9999, background: `${p.color}0f`, border: `1px solid ${p.color}30`, color: p.color, fontSize: "0.75rem", fontWeight: 600 }}>{t}</span>
+                      ))}
+                    </div>
                   </div>
-                  <p style={{ margin: "0 0 0.75rem", color: "#334155", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{p.tag}</p>
-                  <p style={{ margin: "0 0 1.1rem", color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.7 }}>{p.desc}</p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                    {p.tech.map((t) => (
-                      <span key={t} style={{ padding: "0.2rem 0.65rem", borderRadius: 9999, background: `${p.color}0f`, border: `1px solid ${p.color}30`, color: p.color, fontSize: "0.75rem", fontWeight: 600 }}>{t}</span>
-                    ))}
+
+                  {/* Description */}
+                  <p style={{ margin: "0 0 1rem", color: "#64748b", fontSize: "0.9rem", lineHeight: 1.75, borderLeft: `3px solid ${p.color}44`, paddingLeft: "0.85rem" }}>{p.desc}</p>
+
+                  {/* Roles & Responsibilities */}
+                  <div style={{ background: "rgba(255,255,255,0.02)", borderRadius: 12, padding: "1rem 1.25rem" }}>
+                    <p style={{ margin: "0 0 0.6rem", fontSize: "0.75rem", color: p.color, textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>Roles &amp; Responsibilities</p>
+                    <ul style={{ margin: 0, paddingLeft: "1.1rem", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                      {p.points.map((pt) => (
+                        <li key={pt} style={{ color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.65 }}>{pt}</li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               ))}
