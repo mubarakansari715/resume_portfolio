@@ -7,7 +7,7 @@ const C = "#22d3ee";   // cyan
 const GRAD = `linear-gradient(135deg,${V},${C})`;
 
 const T = {
-  bg:      "#0b0b14",
+  bg:      "#02020a",   // deeper black for space
   surf:    "rgba(255,255,255,0.04)",
   border:  "rgba(255,255,255,0.07)",
   t1:      "#f1f5f9",
@@ -145,6 +145,41 @@ function HR() {
   return <div style={{ height: 1, background: T.border, margin: "0 2.5rem" }} />;
 }
 
+/* ─── SPACE BACKGROUND ───────────────────────────────── */
+// Star positions are deterministic (no Math.random) to avoid hydration errors
+/* ─── DOT GRID BACKGROUND ────────────────────────────── */
+function DotGridBg() {
+  return (
+    <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
+      {/* Dot grid layer */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `radial-gradient(${V}28 1px, transparent 1px)`,
+        backgroundSize: "28px 28px",
+      }} />
+      {/* Vignette — fades the grid toward edges for depth */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `radial-gradient(ellipse 80% 80% at 50% 40%, transparent 35%, ${T.bg} 100%)`,
+      }} />
+      {/* Subtle violet glow top-center */}
+      <div style={{
+        position: "absolute", width: "60%", height: "50%",
+        top: 0, left: "20%",
+        background: `radial-gradient(ellipse, ${V}0d 0%, transparent 70%)`,
+        filter: "blur(60px)",
+      }} />
+      {/* Subtle cyan glow bottom-right */}
+      <div style={{
+        position: "absolute", width: "40%", height: "40%",
+        bottom: "5%", right: 0,
+        background: `radial-gradient(ellipse, ${C}09 0%, transparent 70%)`,
+        filter: "blur(50px)",
+      }} />
+    </div>
+  );
+}
+
 /* ─── NAVBAR ─────────────────────────────────────────── */
 function Navbar() {
   const [sc, setSc] = useState(false); const [op, setOp] = useState(false);
@@ -181,11 +216,7 @@ function Navbar() {
 function Hero() {
   const role = useTW(ROLES);
   return (
-    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: "7rem 2rem 5rem" }}>
-
-      {/* Two very subtle background orbs — no particles */}
-      <div style={{ position: "absolute", width: 640, height: 640, borderRadius: "50%", background: `radial-gradient(circle,${V}0f 0%,transparent 70%)`, top: -160, left: -180, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: `radial-gradient(circle,${C}0a 0%,transparent 70%)`, bottom: -100, right: -120, pointerEvents: "none" }} />
+    <section className="hero-section" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: "7rem 2rem 5rem" }}>
 
       <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: 800 }}>
 
@@ -215,7 +246,7 @@ function Hero() {
         </p>
 
         {/* CTAs */}
-        <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "2.5rem" }}>
+        <div className="hero-cta" style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "2.5rem" }}>
           <a href={GMAIL} target="_blank" rel="noreferrer"
             style={{ padding: "0.78rem 2rem", borderRadius: 10, background: GRAD, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.9rem", boxShadow: `0 4px 24px ${V}38`, transition: "opacity .2s,transform .2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = ".83"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
@@ -256,7 +287,7 @@ function Stats() {
   return (
     <Reveal>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "2.5rem 2.5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "1px", background: T.border, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
+        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "1px", background: T.border, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
           {STATS.map(s => {
             const { ref, v } = useIV(); const n = useCnt(s.n, v);
             return (
@@ -276,9 +307,9 @@ function Stats() {
 function About() {
   return (
     <Reveal id="about">
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
+      <div className="sec-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
         <SH label="Who I Am" title="About Me" />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.25rem" }}>
+        <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.25rem" }}>
           <Card style={{ padding: "1.85rem" }}>
             <p style={{ color: T.t2, lineHeight: 1.9, margin: "0 0 1rem", fontSize: "0.94rem" }}>
               Highly motivated Software Engineer with <strong style={{ color: T.t1 }}>5+ years of experience</strong> building impactful Android applications. Proficient in <strong style={{ color: V }}>MVVM, Clean Architecture</strong> and Jetpack components.
@@ -314,9 +345,9 @@ function About() {
 function Skills() {
   return (
     <Reveal id="skills">
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
+      <div className="sec-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
         <SH label="What I Know" title="Technical Skills" />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(255px,1fr))", gap: "1.1rem", marginBottom: "1.1rem" }}>
+        <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(255px,1fr))", gap: "1.1rem", marginBottom: "1.1rem" }}>
           {SKILL_GROUPS.map(g => <SkillGroup key={g.title} {...g} />)}
         </div>
         <Card style={{ padding: "1.75rem" }}>
@@ -368,12 +399,12 @@ function SkillGroup({ title, items }: { title: string; items: { l: string; p: nu
 function Experience() {
   return (
     <Reveal id="experience">
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
+      <div className="sec-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
         <SH label="Where I've Worked" title="Experience" />
         <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
           {EXP.map((e, i) => (
             <div key={e.company} style={{ display: "flex", gap: "1.25rem" }}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
+              <div className="exp-spine" style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
                 <div style={{ width: 11, height: 11, borderRadius: "50%", background: i === 0 ? V : C, boxShadow: `0 0 10px ${i === 0 ? V : C}`, marginTop: "1.55rem", flexShrink: 0 }} />
                 {i < EXP.length - 1 && <div style={{ width: 1, flex: 1, background: `linear-gradient(to bottom,${V}40,transparent)`, minHeight: 36, marginTop: 6 }} />}
               </div>
@@ -403,7 +434,7 @@ function Experience() {
 function Projects() {
   return (
     <Reveal id="projects">
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
+      <div className="sec-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
         <SH label="What I've Built" title="Projects" />
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {PROJECTS.map((p, i) => <ProjCard key={p.name} p={p} index={i} />)}
@@ -464,7 +495,7 @@ function ProjCard({ p, index }: { p: typeof PROJECTS[0]; index: number }) {
 function Education() {
   return (
     <Reveal id="education">
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
+      <div className="sec-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2.5rem" }}>
         <SH label="Academic Background" title="Education" />
         <Card style={{ padding: "1.75rem", display: "flex", alignItems: "center", gap: "1.35rem", flexWrap: "wrap" }}>
           <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.22)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>🎓</div>
@@ -517,7 +548,9 @@ function ContactSection() {
 /* ─── PAGE ───────────────────────────────────────────── */
 export default function Home() {
   return (
-    <div style={{ background: T.bg, color: T.t1, fontFamily: "'Inter','Segoe UI',Arial,sans-serif", lineHeight: 1.6 }}>
+    <div style={{ background: T.bg, color: T.t1, fontFamily: "'Inter','Segoe UI',Arial,sans-serif", lineHeight: 1.6, position: "relative" }}>
+      <DotGridBg />
+      <div style={{ position: "relative", zIndex: 1 }}>
       <Navbar />
       <Hero />
       <HR /><Stats /><HR />
@@ -530,12 +563,64 @@ export default function Home() {
       <div style={{ borderTop: `1px solid ${T.border}`, padding: "1.4rem 2rem", textAlign: "center" }}>
         <p style={{ margin: 0, color: T.t3, fontSize: "0.78rem" }}>© 2024 Mubarak Ansari · Android Software Engineer · Built with Next.js · Deployed on Vercel</p>
       </div>
+      </div>{/* end z-index wrapper */}
       <style>{`
+        *, *::before, *::after { box-sizing: border-box; }
+
         @keyframes blink       { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes statusPulse { 0%,100%{box-shadow:0 0 5px #22c55e} 50%{box-shadow:0 0 12px #22c55e} }
         @keyframes scrollDown  { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
-        .desk{display:flex!important}.mob{display:none!important}
-        @media(max-width:640px){.desk{display:none!important}.mob{display:flex!important}}
+
+        /* ── Nav ── */
+        .desk{display:flex!important} .mob{display:none!important}
+
+        /* ── Responsive ── */
+        @media(max-width:640px){
+          /* Nav */
+          .desk{display:none!important} .mob{display:flex!important}
+
+          /* Hero */
+          .hero-section { padding: 5.5rem 1.25rem 3.5rem !important; }
+          .hero-cta { flex-direction: column; align-items: stretch !important; }
+          .hero-cta a { text-align: center; }
+
+          /* Sections */
+          .sec-pad { padding: 3.5rem 1.25rem !important; }
+
+          /* Stats — 2 columns on mobile */
+          .stats-grid { grid-template-columns: repeat(2,1fr) !important; }
+
+          /* Skills — single column */
+          .skills-grid { grid-template-columns: 1fr !important; }
+
+          /* About grid — single column */
+          .about-grid  { grid-template-columns: 1fr !important; }
+
+          /* Experience timeline — hide spine on very small screens */
+          .exp-spine   { display: none !important; }
+
+          /* Projects — reduce padding */
+          .proj-header { flex-direction: column !important; align-items: flex-start !important; }
+          .proj-pills  { margin-top: 0.5rem; }
+
+          /* General card padding */
+          .card-pad    { padding: 1.25rem !important; }
+
+          /* Education card */
+          .edu-card    { flex-direction: column !important; align-items: flex-start !important; }
+
+          /* Contact */
+          .contact-links { flex-direction: column; align-items: center; }
+          .contact-links a { width: 100%; text-align: center; }
+        }
+
+        @media(max-width:900px) and (min-width:641px){
+          .stats-grid  { grid-template-columns: repeat(2,1fr) !important; }
+          .skills-grid { grid-template-columns: repeat(2,1fr) !important; }
+        }
+
+        /* Ensure no horizontal overflow */
+        html, body { overflow-x: hidden; max-width: 100vw; }
       `}</style>
     </div>
   );
