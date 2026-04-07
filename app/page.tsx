@@ -147,59 +147,117 @@ function HR() {
 
 /* ─── SPACE BACKGROUND ───────────────────────────────── */
 // Star positions are deterministic (no Math.random) to avoid hydration errors
-/* ─── DOT GRID BACKGROUND ────────────────────────────── */
-function DotGridBg() {
+/* ─── LIVE CANVAS BACKGROUND ─────────────────────────── */
+function LiveBg() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouse = useRef({ x: -999, y: -999 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    const onMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
+    const onLeave = () => { mouse.current = { x: -999, y: -999 }; };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseleave", onLeave);
+
+    /* particles */
+    const N = 90, LINK = 160, PUSH = 110;
+    const pts = Array.from({ length: N }, () => ({
+      x:  Math.random() * canvas.width,
+      y:  Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55,
+      r:  Math.random() * 1.6 + 0.7,
+      violet: Math.random() > 0.45,   // ~55% violet, 45% cyan
+    }));
+
+    let raf: number;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const mx = mouse.current.x, my = mouse.current.y;
+
+      /* update + draw dots */
+      pts.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        /* mouse repulsion */
+        const dx = p.x - mx, dy = p.y - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < PUSH && dist > 0) {
+          const f = (PUSH - dist) / PUSH * 1.8;
+          p.x += (dx / dist) * f;
+          p.y += (dy / dist) * f;
+        }
+
+        /* glow dot */
+        const color = p.violet ? "139,92,246" : "34,211,238";
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = p.violet ? V : C;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${color},0.85)`;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      /* connection lines */
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < LINK) {
+            const alpha = (1 - d / LINK) * 0.45;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            /* blend color toward cyan when particles differ */
+            const bothV = pts[i].violet && pts[j].violet;
+            const bothC = !pts[i].violet && !pts[j].violet;
+            ctx.strokeStyle = bothV
+              ? `rgba(139,92,246,${alpha})`
+              : bothC
+              ? `rgba(34,211,238,${alpha})`
+              : `rgba(100,160,250,${alpha})`;   /* blended violet+cyan */
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+
+      raf = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseleave", onLeave);
+    };
+  }, []);
+
   return (
     <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}>
-
-      {/* Animated dot grid — slowly drifts */}
-      <div style={{
-        position: "absolute", inset: "-28px",   // slightly oversized so drift doesn't show edges
-        backgroundImage: `radial-gradient(${V}25 1px, transparent 1px)`,
-        backgroundSize: "28px 28px",
-        animation: "driftGrid 12s ease-in-out infinite",
-      }} />
-
-      {/* Vignette — keeps edges clean */}
+      {/* Canvas */}
+      <canvas ref={canvasRef} style={{ position: "absolute", inset: 0 }} />
+      {/* Soft vignette so edges stay dark and content pops */}
       <div style={{
         position: "absolute", inset: 0,
-        background: `radial-gradient(ellipse 80% 80% at 50% 40%, transparent 30%, ${T.bg} 100%)`,
-      }} />
-
-      {/* Violet orb — top-left, slow float */}
-      <div style={{
-        position: "absolute", width: "55%", height: "55%",
-        top: "-5%", left: "10%",
-        background: `radial-gradient(ellipse, ${V}12 0%, transparent 70%)`,
-        filter: "blur(72px)",
-        animation: "orbA 14s ease-in-out infinite",
-      }} />
-
-      {/* Cyan orb — bottom-right, opposite phase */}
-      <div style={{
-        position: "absolute", width: "45%", height: "45%",
-        bottom: "0%", right: "-5%",
-        background: `radial-gradient(ellipse, ${C}0e 0%, transparent 70%)`,
-        filter: "blur(64px)",
-        animation: "orbB 18s ease-in-out infinite",
-      }} />
-
-      {/* Violet orb — mid-left, slow pulse */}
-      <div style={{
-        position: "absolute", width: "30%", height: "35%",
-        top: "45%", left: "-5%",
-        background: `radial-gradient(ellipse, ${V}09 0%, transparent 70%)`,
-        filter: "blur(55px)",
-        animation: "orbA 22s ease-in-out infinite reverse",
-      }} />
-
-      {/* Cyan orb — top-right accent */}
-      <div style={{
-        position: "absolute", width: "25%", height: "30%",
-        top: "5%", right: "5%",
-        background: `radial-gradient(ellipse, ${C}08 0%, transparent 70%)`,
-        filter: "blur(50px)",
-        animation: "orbB 16s ease-in-out infinite reverse",
+        background: `radial-gradient(ellipse 90% 75% at 50% 40%, transparent 25%, ${T.bg}bb 100%)`,
       }} />
     </div>
   );
@@ -574,7 +632,7 @@ function ContactSection() {
 export default function Home() {
   return (
     <div style={{ background: T.bg, color: T.t1, fontFamily: "'Inter','Segoe UI',Arial,sans-serif", lineHeight: 1.6, position: "relative" }}>
-      <DotGridBg />
+      <LiveBg />
       <div style={{ position: "relative", zIndex: 1 }}>
       <Navbar />
       <Hero />
@@ -595,9 +653,6 @@ export default function Home() {
         @keyframes blink       { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes statusPulse { 0%,100%{box-shadow:0 0 5px #22c55e} 50%{box-shadow:0 0 12px #22c55e} }
         @keyframes scrollDown  { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
-        @keyframes driftGrid   { 0%,100%{transform:translate(0,0)} 33%{transform:translate(7px,5px)} 66%{transform:translate(-5px,8px)} }
-        @keyframes orbA        { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(40px,30px) scale(1.08)} 70%{transform:translate(15px,50px) scale(0.95)} }
-        @keyframes orbB        { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-35px,-25px) scale(1.06)} 65%{transform:translate(-10px,30px) scale(0.97)} }
 
         /* ── Nav ── */
         .desk{display:flex!important} .mob{display:none!important}
