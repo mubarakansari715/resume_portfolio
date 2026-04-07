@@ -19,7 +19,7 @@ const T = {
 const NAV   = ["About","Skills","Experience","Projects","Education","Contact"];
 const ROLES = ["Android Engineer","Kotlin Developer","Jetpack Compose Dev","React Native Dev","MVVM Architect"];
 const STATS = [
-  { n:5, s:"+", label:"Years Experience" },
+  { n:4, s:".5+", label:"Years Experience" },
   { n:2, s:"",  label:"Companies" },
   { n:6, s:"+", label:"Apps Shipped" },
   { n:1, s:"",  label:"Award Won" },
@@ -242,7 +242,7 @@ function Hero() {
 
         {/* Tagline */}
         <p style={{ color: T.t3, fontSize: "0.94rem", maxWidth: 520, margin: "0 auto 2.25rem", lineHeight: 1.8 }}>
-          Android Developer with 5+ years of expertise in Compose, Kotlin &amp; Java · React Native
+          Android Developer with 4.5+ years of expertise in Compose, Kotlin &amp; Java · React Native
         </p>
 
         {/* CTAs */}
@@ -312,7 +312,7 @@ function About() {
         <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.25rem" }}>
           <Card style={{ padding: "1.85rem" }}>
             <p style={{ color: T.t2, lineHeight: 1.9, margin: "0 0 1rem", fontSize: "0.94rem" }}>
-              Highly motivated Software Engineer with <strong style={{ color: T.t1 }}>5+ years of experience</strong> building impactful Android applications. Proficient in <strong style={{ color: V }}>MVVM, Clean Architecture</strong> and Jetpack components.
+              Highly motivated Software Engineer with <strong style={{ color: T.t1 }}>4.5+ years of experience</strong> building impactful Android applications. Proficient in <strong style={{ color: V }}>MVVM, Clean Architecture</strong> and Jetpack components.
             </p>
             <p style={{ color: T.t3, lineHeight: 1.8, margin: 0, fontSize: "0.89rem" }}>
               Experienced in managing Play Store releases, CI/CD pipelines, performance profiling, JUnit testing, and Root Cause Analysis to ensure production stability.
