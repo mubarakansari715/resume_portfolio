@@ -2,189 +2,213 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-/* ─── DATA ─────────────────────────────────────────── */
+/* ─────────────── DESIGN TOKENS ─────────────────────── */
+const C = {
+  bg:        "#06060f",
+  surface:   "#0e0e1c",
+  border:    "rgba(255,255,255,0.07)",
+  borderHov: "rgba(139,92,246,0.5)",
+  violet:    "#8b5cf6",
+  cyan:      "#22d3ee",
+  grad:      "linear-gradient(135deg,#8b5cf6,#22d3ee)",
+  gradText:  "linear-gradient(135deg,#c4b5fd,#67e8f9)",
+  textPri:   "#f1f5f9",
+  textSec:   "#94a3b8",
+  textMut:   "#475569",
+};
 
-const NAV_LINKS = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
+/* ─────────────── DATA ───────────────────────────────── */
 
-const ROLES = ["Android Engineer", "Kotlin Developer", "MVVM Architect", "Jetpack Compose Dev", "Mobile Developer"];
+const NAV = ["About","Skills","Experience","Projects","Education","Contact"];
+
+const ROLES = ["Android Engineer","Kotlin Developer","Jetpack Compose Dev","React Native Dev","MVVM Architect"];
 
 const STATS = [
-  { value: 5, suffix: "+", label: "Years Experience" },
-  { value: 2, suffix: "", label: "Companies" },
-  { value: 6, suffix: "+", label: "Projects Shipped" },
-  { value: 1, suffix: "", label: "Award Won" },
+  { n: 5,  s: "+", label: "Years Experience" },
+  { n: 2,  s: "",  label: "Companies" },
+  { n: 6,  s: "+", label: "Apps Shipped" },
+  { n: 1,  s: "",  label: "Award" },
 ];
 
-const SKILLS = [
-  { label: "Kotlin", pct: 93, color: "#a78bfa" },
-  { label: "Java", pct: 85, color: "#fb923c" },
-  { label: "Jetpack Compose", pct: 80, color: "#34d399" },
-  { label: "React Native", pct: 72, color: "#38bdf8" },
-  { label: "MVVM / Clean Architecture", pct: 92, color: "#f472b6" },
-  { label: "Dagger Hilt (DI)", pct: 85, color: "#facc15" },
-  { label: "Firebase & Crashlytics", pct: 88, color: "#a78bfa" },
-  { label: "RESTful APIs & WebSockets", pct: 90, color: "#38bdf8" },
-  { label: "Room DB & Coroutines", pct: 87, color: "#34d399" },
-  { label: "CI/CD (Fastlane / Bitrise)", pct: 75, color: "#fb923c" },
-  { label: "JUnit & Performance Profiling", pct: 78, color: "#f472b6" },
+const SKILL_GROUPS = [
+  {
+    title: "Languages",
+    icon: "⌨️",
+    items: [
+      { label: "Kotlin",          pct: 93 },
+      { label: "Java",            pct: 85 },
+      { label: "Jetpack Compose", pct: 80 },
+      { label: "XML / Layouts",   pct: 88 },
+      { label: "React Native",    pct: 72 },
+    ],
+  },
+  {
+    title: "Architecture & Patterns",
+    icon: "🏗️",
+    items: [
+      { label: "MVVM",                pct: 93 },
+      { label: "Clean Architecture",  pct: 90 },
+      { label: "MVP",                 pct: 78 },
+      { label: "Dagger Hilt (DI)",    pct: 85 },
+      { label: "Coroutines / Flow",   pct: 87 },
+    ],
+  },
+  {
+    title: "Tools & Integrations",
+    icon: "🔧",
+    items: [
+      { label: "Firebase & Crashlytics",    pct: 88 },
+      { label: "RESTful APIs / WebSockets", pct: 90 },
+      { label: "Room Database",             pct: 87 },
+      { label: "CI/CD (Fastlane/Bitrise)",  pct: 75 },
+      { label: "JUnit & Espresso",          pct: 78 },
+    ],
+  },
 ];
+
+const TOOLS = [
+  "Android Studio","Version Catalog","Stripe / PayPal","KtLint",
+  "GitHub Actions","Fastlane","Bitrise","Azure DevOps","Jira",
+  "WebEngage","Huawei SDK","Sentry","WebSockets","Git / GitLab",
+];
+
+const AI_TOOLS = ["Cursor","Claude AI","Antigravity"];
 
 const EXPERIENCE = [
   {
     company: "Bacancy Technology",
-    role: "Software Engineer",
-    period: "Sep 2023 – Present",
-    color: "#a78bfa",
-    icon: "🚀",
+    role:    "Software Engineer",
+    period:  "Sep 2023 – Present",
     points: [
-      "Developed core features using Kotlin and Jetpack Compose with MVVM & Clean Architecture.",
-      "Implemented OTP verification with auto SMS detection and Firebase Analytics integration.",
-      "Wrote JUnit unit tests to validate business logic and improve code reliability.",
-      "Managed app publishing, release cycles and Play Store compliance.",
-      "Used GitHub Actions and Fastlane for CI/CD pipelines; tracked tasks via Azure DevOps.",
+      "Developed core Android features using Kotlin & Jetpack Compose with MVVM / Clean Architecture.",
+      "Implemented OTP auto-SMS detection and integrated Firebase & Google Analytics.",
+      "Wrote JUnit unit tests to validate business logic and ensure code reliability.",
+      "Managed app publishing, release cycles, and Play Store compliance.",
+      "Set up CI/CD pipelines using GitHub Actions and Fastlane; tracked tasks via Azure DevOps.",
     ],
   },
   {
     company: "Brainvire Info Tech",
-    role: "Software Engineer",
-    period: "Jul 2021 – Aug 2023",
-    color: "#38bdf8",
-    icon: "💼",
+    role:    "Software Engineer",
+    period:  "Jul 2021 – Aug 2023",
     points: [
-      "Built and maintained multiple production Android applications (Kotlin/Java).",
+      "Built and maintained multiple production Android applications in Kotlin / Java.",
       "Integrated Firebase Crashlytics and Sentry for crash monitoring and error detection.",
-      "Enhanced multi-screen responsive support for mobile and tablet form factors.",
-      "Implemented Huawei SDK for push notifications, maps, and analytics.",
-      "Added WebEngage and Google Analytics for user behaviour tracking.",
-      "Performed Root Cause Analysis (RCA) to ensure production stability.",
+      "Added Huawei SDK for push notifications, maps, and analytics.",
+      "Enhanced multi-screen responsive support across mobile and tablet form factors.",
+      "Performed Root Cause Analysis (RCA) to ensure long-term production stability.",
     ],
   },
 ];
 
 const PROJECTS = [
   {
-    name: "Bonder",
-    tag: "Professional & Social Connection",
-    color: "#a78bfa",
-    icon: "🔗",
-    tech: ["Kotlin", "Jetpack Compose", "MVVM", "Firebase Analytics", "JUnit", "Azure DevOps"],
-    desc: "Designed to create meaningful connections between professionals and social users across IT, digital marketing, and related industries. Built core features with Kotlin + Jetpack Compose (MVVM), implemented OTP auto-SMS detection, integrated Firebase & Google Analytics, Crashlytics, wrote JUnit tests, and published on Google Play Store.",
-    points: [
-      "Developed core features using Kotlin and Jetpack Compose following MVVM architecture.",
-      "Implemented OTP verification with automatic SMS detection for seamless authentication.",
-      "Integrated Firebase Analytics and Google Analytics to track user behavior.",
-      "Implemented Firebase Crashlytics for real-time crash monitoring.",
-      "Wrote JUnit unit tests to validate business logic and improve reliability.",
-      "Published and maintained the application on Google Play Store.",
+    name:  "Bonder",
+    tag:   "Professional & Social Connection",
+    icon:  "🔗",
+    tech:  ["Kotlin","Jetpack Compose","MVVM","Firebase","JUnit","Azure DevOps"],
+    desc:  "Platform that creates meaningful connections between professionals across IT, digital marketing and related fields.",
+    points:[
+      "Built core features with Kotlin + Jetpack Compose following MVVM architecture.",
+      "Implemented OTP verification with automatic SMS detection.",
+      "Integrated Firebase & Google Analytics for user behaviour tracking.",
+      "Added Firebase Crashlytics for real-time crash monitoring.",
+      "Wrote JUnit unit tests and published the app on Google Play Store.",
     ],
   },
   {
-    name: "Seeking App",
-    tag: "Luxury Dating Platform",
-    color: "#f472b6",
-    icon: "💎",
-    tech: ["Kotlin", "Clean Architecture", "Fragments", "Performance Optimization", "Jira"],
-    desc: "A luxury dating platform connecting people who value success, attractiveness, and ambition. Migrated legacy Activities to Fragment-based architecture with Clean Architecture, developed new feature modules, optimised performance, redesigned multiple UI screens, and managed bug tracking via Jira.",
-    points: [
-      "Developed new modules and implemented feature enhancements.",
+    name:  "Seeking App",
+    tag:   "Luxury Dating Platform",
+    icon:  "💎",
+    tech:  ["Kotlin","Clean Architecture","Fragments","Jira"],
+    desc:  "Luxury dating platform connecting ambitious, success-driven individuals globally.",
+    points:[
+      "Developed new modules and feature enhancements.",
       "Implemented Clean Architecture to improve maintainability and scalability.",
       "Migrated legacy Activities to Fragment-based architecture.",
-      "Optimized application performance and reduced code complexity.",
-      "Redesigned UI screens to improve user experience.",
+      "Optimized performance, reduced code complexity, and redesigned UI screens.",
     ],
   },
   {
-    name: "IRA Financial",
-    tag: "Self-Directed Retirement App",
-    color: "#818cf8",
-    icon: "💰",
-    tech: ["Kotlin", "Firebase", "Fingerprint Auth", "WebView", "Play Store"],
-    desc: "Android app for IRA Financial — a leading provider of self-directed retirement products — enabling clients to establish and maintain retirement accounts on mobile. Monitored Firebase crash reports daily, implemented fingerprint authentication, resolved WebView performance issues, and managed Play Store publishing.",
-    points: [
-      "Monitored Firebase crash reports daily to ensure app stability.",
-      "Resolved bugs affecting users to ensure a smoother experience.",
-      "Implemented fingerprint authentication support.",
-      "Collaborated with client on app publishing and requested changes.",
+    name:  "IRA Financial",
+    tag:   "Self-Directed Retirement App",
+    icon:  "💰",
+    tech:  ["Kotlin","Firebase","Fingerprint Auth","WebView","Play Store"],
+    desc:  "Android app for a leading provider of self-directed retirement products — helping clients manage retirement accounts on mobile.",
+    points:[
+      "Monitored Firebase crash reports daily for app stability.",
+      "Implemented biometric (fingerprint) authentication.",
       "Optimized performance and resolved WebView-related issues.",
+      "Collaborated with the client on app publishing and compliance changes.",
     ],
   },
   {
-    name: "AlokozayShop",
-    tag: "Grocery E-commerce",
-    color: "#34d399",
-    icon: "🛒",
-    tech: ["Kotlin", "WebEngage", "Huawei SDK", "Sentry", "Firebase", "Google Analytics", "Azure DevOps"],
-    desc: "One-stop grocery delivery app covering food, beverages, and daily essentials. Integrated WebEngage, Firebase & Huawei Analytics, added Huawei SDK for push notifications and maps, implemented Sentry for error detection, and added multi-screen (mobile/tablet) support.",
-    points: [
-      "Added WebEngage for user activity tracking and engagement analytics.",
-      "Implemented multi-screen support for mobile and tablet form factors.",
+    name:  "AlokozayShop",
+    tag:   "Grocery E-commerce App",
+    icon:  "🛒",
+    tech:  ["Kotlin","WebEngage","Huawei SDK","Sentry","Firebase","Azure DevOps"],
+    desc:  "One-stop grocery delivery app covering food, beverages, and daily essentials with supermarket-level inventory.",
+    points:[
+      "Integrated WebEngage for user activity analytics.",
       "Added Huawei SDK for push notifications, search, and maps.",
-      "Integrated Firebase, Google Analytics, and Huawei Analytics.",
-      "Added Sentry for error detection and performance monitoring.",
+      "Implemented Sentry for error detection and performance monitoring.",
+      "Added multi-screen (mobile/tablet) responsive support.",
     ],
   },
   {
-    name: "The Weed Tube",
-    tag: "Video Sharing App",
-    color: "#fb923c",
-    icon: "🎬",
-    tech: ["Java", "Kotlin", "Dark/Light Theme", "Firebase", "Azure DevOps"],
-    desc: "YouTube-style video sharing platform where users share videos, interact globally, and engage via likes, dislikes, shares, and reports. Integrated Dark/Light themes, Firebase Crashlytics, push notifications, rebuilt UI screens, and resolved Azure DevOps tracked bugs.",
-    points: [
-      "Integrated Dark/Light theme support across the application.",
-      "Added Firebase Crashlytics and app performance monitoring.",
-      "Implemented Firebase push notifications.",
-      "Redesigned app UI for improved user experience.",
-      "Handled Azure DevOps bug tracking and task management.",
+    name:  "The Weed Tube",
+    tag:   "Video Sharing App",
+    icon:  "🎬",
+    tech:  ["Java","Kotlin","Dark/Light Theme","Firebase","Azure DevOps"],
+    desc:  "YouTube-style video sharing platform where users share, like, comment and report videos globally.",
+    points:[
+      "Integrated Dark / Light theme support across the app.",
+      "Added Firebase Crashlytics and push notifications.",
+      "Rebuilt key UI screens for improved user experience.",
+      "Handled Azure DevOps bug tracking and maintenance tasks.",
     ],
   },
   {
-    name: "Book My Table",
-    tag: "Restaurant Table Booking",
-    color: "#38bdf8",
-    icon: "🍽️",
-    tech: ["Java", "Kotlin", "Firebase", "Push Notifications", "REST API"],
-    desc: "Restaurant table booking app allowing users to pre-book tables for parties and meetings at a specific time, day, and date — with custom instructions such as lighting and cake preferences. Handled full Android development, Firebase Crashlytics, push notifications, and REST API integration.",
-    points: [
-      "Led Android-side app development and maintenance.",
-      "Integrated Firebase Crashlytics for stability monitoring.",
-      "Implemented Firebase push notifications.",
-      "Handled REST API integration and developer testing.",
+    name:  "Book My Table",
+    tag:   "Restaurant Table Booking",
+    icon:  "🍽️",
+    tech:  ["Java","Kotlin","Firebase","REST API"],
+    desc:  "Pre-book restaurant tables for parties and meetings at a specific time, day, and date with custom instructions.",
+    points:[
+      "Led Android-side app development from scratch.",
+      "Integrated Firebase Crashlytics and push notifications.",
+      "Implemented REST API integration and conducted developer testing.",
     ],
   },
 ];
 
-/* ─── HOOKS ─────────────────────────────────────────── */
+/* ─────────────── HOOKS ──────────────────────────────── */
 
-function useTypewriter(words: string[], speed = 80, pause = 2000) {
+function useTypewriter(words: string[], speed = 75, pause = 2200) {
   const [display, setDisplay] = useState("");
   const [wi, setWi] = useState(0);
-  const [deleting, setDeleting] = useState(false);
-
+  const [del, setDel] = useState(false);
   useEffect(() => {
     const word = words[wi % words.length];
-    const delay = deleting ? speed / 2 : speed;
     const id = setTimeout(() => {
-      if (!deleting) {
+      if (!del) {
         setDisplay(word.slice(0, display.length + 1));
-        if (display.length + 1 === word.length) setTimeout(() => setDeleting(true), pause);
+        if (display.length + 1 === word.length) setTimeout(() => setDel(true), pause);
       } else {
         setDisplay(word.slice(0, display.length - 1));
-        if (display.length - 1 === 0) { setDeleting(false); setWi((n) => n + 1); }
+        if (display.length - 1 === 0) { setDel(false); setWi(n => n + 1); }
       }
-    }, delay);
+    }, del ? speed / 2 : speed);
     return () => clearTimeout(id);
-  }, [display, deleting, wi, words, speed, pause]);
-
+  }, [display, del, wi, words, speed, pause]);
   return display;
 }
 
-function useInView(threshold = 0.18) {
+function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const el = ref.current; if (!el) return;
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
     obs.observe(el);
     return () => obs.disconnect();
@@ -192,86 +216,103 @@ function useInView(threshold = 0.18) {
   return { ref, inView };
 }
 
-function useCounter(target: number, active: boolean, duration = 1500) {
-  const [count, setCount] = useState(0);
+function useCount(target: number, active: boolean) {
+  const [n, setN] = useState(0);
   useEffect(() => {
     if (!active) return;
-    const steps = 40;
-    const step = target / steps;
-    const interval = duration / steps;
-    let current = 0;
+    let cur = 0; const step = target / 40;
     const id = setInterval(() => {
-      current += step;
-      if (current >= target) { setCount(target); clearInterval(id); }
-      else setCount(Math.floor(current));
-    }, interval);
+      cur += step;
+      if (cur >= target) { setN(target); clearInterval(id); } else setN(Math.floor(cur));
+    }, 35);
     return () => clearInterval(id);
-  }, [active, target, duration]);
-  return count;
+  }, [active, target]);
+  return n;
 }
 
-/* ─── COMPONENTS ─────────────────────────────────────── */
+/* ─────────────── SMALL COMPONENTS ──────────────────── */
+
+function Reveal({ children, id, delay = 0 }: { children: React.ReactNode; id?: string; delay?: number }) {
+  const { ref, inView } = useInView(0.08);
+  return (
+    <div id={id} ref={ref} style={{ opacity: inView ? 1 : 0, transform: inView ? "none" : "translateY(36px)", transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+
+function Tag({ label, color = C.violet }: { label: string; color?: string }) {
+  return (
+    <span style={{ padding: "0.2rem 0.7rem", borderRadius: 6, background: `${color}14`, border: `1px solid ${color}40`, color, fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.02em" }}>
+      {label}
+    </span>
+  );
+}
+
+function Divider() {
+  return <div style={{ height: 1, background: C.border, margin: "0 2rem" }} />;
+}
+
+function SecLabel({ text }: { text: string }) {
+  return (
+    <p style={{ margin: "0 0 0.4rem", fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.18em", background: C.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+      {text}
+    </p>
+  );
+}
+
+function SecTitle({ text }: { text: string }) {
+  return <h2 style={{ margin: "0 0 0.6rem", fontSize: "clamp(1.9rem,4vw,2.6rem)", fontWeight: 900, color: C.textPri, letterSpacing: "-0.02em" }}>{text}</h2>;
+}
+
+function SecBar({ color = C.violet }: { color?: string }) {
+  return <div style={{ width: 40, height: 3, borderRadius: 9999, background: color, marginBottom: "2.5rem" }} />;
+}
+
+/* ─────────────── NAVBAR ─────────────────────────────── */
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
-
-  const scrollTo = useCallback((id: string) => {
+  const go = useCallback((id: string) => {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
   }, []);
-
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      padding: "0 2rem",
-      background: scrolled ? "rgba(10,10,20,0.85)" : "transparent",
-      backdropFilter: scrolled ? "blur(16px)" : "none",
-      borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
-      transition: "all 0.3s ease",
-      display: "flex", alignItems: "center", justifyContent: "space-between", height: 64,
-    }}>
-      <span style={{ fontWeight: 800, fontSize: "1.15rem", background: "linear-gradient(135deg,#a78bfa,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", cursor: "pointer" }}
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-        MA
-      </span>
+    <nav style={{ position: "fixed", inset: "0 0 auto 0", zIndex: 200, height: 62, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 2.5rem", background: scrolled ? "rgba(6,6,15,0.88)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", borderBottom: scrolled ? `1px solid ${C.border}` : "none", transition: "all 0.35s ease" }}>
 
-      {/* Desktop links */}
-      <div style={{ display: "flex", gap: "0.25rem" }} className="nav-desktop">
-        {NAV_LINKS.map((l) => (
-          <button key={l} onClick={() => scrollTo(l)}
-            style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", padding: "0.4rem 0.85rem", borderRadius: 8, fontSize: "0.88rem", fontWeight: 500, transition: "color 0.2s, background 0.2s" }}
-            onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "#e2e8f0"; (e.target as HTMLElement).style.background = "rgba(255,255,255,0.06)"; }}
-            onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "#94a3b8"; (e.target as HTMLElement).style.background = "none"; }}>
+      {/* Logo */}
+      <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+        <span style={{ fontSize: "1.1rem", fontWeight: 900, background: C.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", letterSpacing: "-0.03em" }}>MA.</span>
+      </button>
+
+      {/* Desktop */}
+      <div className="desk" style={{ display: "flex", alignItems: "center", gap: "0.1rem" }}>
+        {NAV.map(l => (
+          <button key={l} onClick={() => go(l)} style={{ background: "none", border: "none", color: C.textMut, cursor: "pointer", padding: "0.45rem 0.9rem", borderRadius: 8, fontSize: "0.85rem", fontWeight: 500, transition: "color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.color = C.textPri)}
+            onMouseLeave={e => (e.currentTarget.style.color = C.textMut)}>
             {l}
           </button>
         ))}
-        <a href="mailto:mubarakansari715@gmail.com"
-          style={{ marginLeft: "0.5rem", padding: "0.4rem 1.1rem", borderRadius: 8, background: "linear-gradient(135deg,#a78bfa,#818cf8)", color: "#fff", fontWeight: 600, fontSize: "0.88rem", textDecoration: "none" }}>
+        <a href="mailto:mubarakansari715@gmail.com" style={{ marginLeft: "0.75rem", padding: "0.45rem 1.2rem", borderRadius: 8, background: C.grad, color: "#fff", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", boxShadow: "0 2px 16px rgba(139,92,246,0.3)" }}>
           Hire Me
         </a>
       </div>
 
-      {/* Mobile hamburger */}
-      <button onClick={() => setOpen(!open)} className="nav-mobile"
-        style={{ background: "none", border: "1px solid #1e293b", borderRadius: 8, padding: "0.4rem 0.6rem", cursor: "pointer", color: "#94a3b8", fontSize: "1.2rem" }}>
+      {/* Mobile */}
+      <button className="mob" onClick={() => setOpen(!open)} style={{ background: "none", border: `1px solid ${C.border}`, borderRadius: 8, padding: "0.4rem 0.65rem", color: C.textSec, cursor: "pointer", fontSize: "1.1rem" }}>
         {open ? "✕" : "☰"}
       </button>
-
-      {/* Mobile drawer */}
       {open && (
-        <div className="nav-mobile" style={{ position: "fixed", top: 64, left: 0, right: 0, background: "rgba(10,10,20,0.97)", backdropFilter: "blur(16px)", padding: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem", borderBottom: "1px solid #1e293b" }}>
-          {NAV_LINKS.map((l) => (
-            <button key={l} onClick={() => scrollTo(l)}
-              style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", padding: "0.75rem 1rem", borderRadius: 8, fontSize: "1rem", fontWeight: 500, textAlign: "left" }}>
-              {l}
-            </button>
+        <div className="mob" style={{ position: "fixed", top: 62, left: 0, right: 0, background: "rgba(6,6,15,0.97)", backdropFilter: "blur(20px)", borderBottom: `1px solid ${C.border}`, display: "flex", flexDirection: "column", padding: "0.75rem" }}>
+          {NAV.map(l => (
+            <button key={l} onClick={() => go(l)} style={{ background: "none", border: "none", color: C.textSec, cursor: "pointer", padding: "0.8rem 1rem", textAlign: "left", fontSize: "1rem", fontWeight: 500, borderRadius: 8 }}>{l}</button>
           ))}
         </div>
       )}
@@ -279,386 +320,396 @@ function Navbar() {
   );
 }
 
-function StatCard({ value, suffix, label }: { value: number; suffix: string; label: string }) {
-  const { ref, inView } = useInView();
-  const count = useCounter(value, inView);
-  return (
-    <div ref={ref} style={{ textAlign: "center", padding: "1.5rem", background: "rgba(255,255,255,0.03)", border: "1px solid #1e293b", borderRadius: 16 }}>
-      <p style={{ margin: 0, fontSize: "2.5rem", fontWeight: 900, background: "linear-gradient(135deg,#a78bfa,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-        {count}{suffix}
-      </p>
-      <p style={{ margin: "0.35rem 0 0", color: "#64748b", fontSize: "0.85rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.1em" }}>{label}</p>
-    </div>
-  );
-}
-
-function SkillBar({ label, pct, color, delay }: { label: string; pct: number; color: string; delay: number }) {
-  const { ref, inView } = useInView();
-  return (
-    <div ref={ref} style={{ marginBottom: "1.1rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.4rem" }}>
-        <span style={{ color: "#cbd5e1", fontSize: "0.88rem", fontWeight: 600 }}>{label}</span>
-        <span style={{ color: color, fontSize: "0.8rem", fontWeight: 700 }}>{pct}%</span>
-      </div>
-      <div style={{ height: 7, background: "rgba(255,255,255,0.06)", borderRadius: 9999, overflow: "hidden" }}>
-        <div style={{
-          height: "100%", borderRadius: 9999,
-          background: `linear-gradient(90deg, ${color}cc, ${color})`,
-          width: inView ? `${pct}%` : "0%",
-          transition: `width 1.2s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
-          boxShadow: `0 0 10px ${color}55`,
-        }} />
-      </div>
-    </div>
-  );
-}
-
-function FadeSection({ children, id }: { children: React.ReactNode; id?: string }) {
-  const { ref, inView } = useInView(0.1);
-  return (
-    <div id={id} ref={ref} style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(40px)", transition: "opacity 0.75s ease, transform 0.75s ease" }}>
-      {children}
-    </div>
-  );
-}
-
-function SectionHeading({ title, sub, accent }: { title: string; sub?: string; accent: string }) {
-  return (
-    <div style={{ marginBottom: "2.5rem" }}>
-      <p style={{ margin: "0 0 0.35rem", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: accent, fontWeight: 700 }}>— {sub ?? title}</p>
-      <h2 style={{ margin: 0, fontSize: "clamp(1.8rem,4vw,2.4rem)", fontWeight: 900, color: "#f1f5f9" }}>{title}</h2>
-      <div style={{ width: 48, height: 4, borderRadius: 9999, background: `linear-gradient(90deg, ${accent}, transparent)`, marginTop: "0.6rem" }} />
-    </div>
-  );
-}
-
-/* ─── MAIN PAGE ─────────────────────────────────────── */
+/* ─────────────── MAIN PAGE ──────────────────────────── */
 
 export default function Home() {
   const role = useTypewriter(ROLES);
 
   return (
-    <div style={{ background: "#060611", color: "#e2e8f0", fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif" }}>
+    <div style={{ background: C.bg, color: C.textPri, fontFamily: "'Inter','Segoe UI',Arial,sans-serif", lineHeight: 1.6 }}>
       <Navbar />
 
-      {/* ════ HERO ════ */}
-      <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: "6rem 2rem 4rem" }}>
+      {/* ══════════════════ HERO ══════════════════ */}
+      <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", padding: "7rem 2rem 5rem" }}>
 
-        {/* Animated grid background */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(167,139,250,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(167,139,250,0.04) 1px, transparent 1px)", backgroundSize: "60px 60px", pointerEvents: "none" }} />
+        {/* Orbs */}
+        <div style={{ position: "absolute", width: 720, height: 720, borderRadius: "50%", background: "radial-gradient(circle,rgba(139,92,246,0.1) 0%,transparent 65%)", top: -160, left: -200, pointerEvents: "none", animation: "orbA 9s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(34,211,238,0.08) 0%,transparent 65%)", bottom: -80, right: -120, pointerEvents: "none", animation: "orbB 11s ease-in-out infinite" }} />
 
-        {/* Glow orbs */}
-        <div style={{ position: "absolute", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 65%)", top: "-150px", left: "-200px", pointerEvents: "none", animation: "orb1 8s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 65%)", bottom: "-100px", right: "-150px", pointerEvents: "none", animation: "orb2 10s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(244,114,182,0.08) 0%, transparent 65%)", top: "40%", right: "15%", pointerEvents: "none", animation: "orb1 12s ease-in-out infinite reverse" }} />
-
-        {/* Floating particles */}
-        {[...Array(22)].map((_, i) => (
-          <span key={i} style={{ position: "absolute", borderRadius: "50%", background: `hsl(${i * 22 % 360},65%,65%)`, width: i % 3 === 0 ? 5 : 3, height: i % 3 === 0 ? 5 : 3, left: `${(i * 4.6 + 3) % 100}%`, top: `${(i * 6.8 + 5) % 100}%`, animation: `floatP ${3.5 + i % 5}s ease-in-out infinite`, animationDelay: `${(i * 0.4) % 4}s`, opacity: 0.45 }} />
+        {/* Dots */}
+        {[...Array(16)].map((_, i) => (
+          <span key={i} style={{ position: "absolute", width: i % 4 === 0 ? 5 : 3, height: i % 4 === 0 ? 5 : 3, borderRadius: "50%", background: i % 2 === 0 ? `${C.violet}99` : `${C.cyan}99`, left: `${(i * 6.3 + 4) % 100}%`, top: `${(i * 7.7 + 6) % 100}%`, animation: `floatDot ${4 + i % 4}s ease-in-out infinite`, animationDelay: `${(i * 0.45) % 4}s`, pointerEvents: "none" }} />
         ))}
 
-        <div style={{ textAlign: "center", position: "relative", zIndex: 10, maxWidth: 850 }}>
+        <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: 820 }}>
 
-          {/* Badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(167,139,250,0.1)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: 9999, padding: "0.35rem 1rem", marginBottom: "1.75rem", animation: "fadeUp 0.6s ease both" }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px #4ade80", animation: "pulse 2s infinite" }} />
-            <span style={{ fontSize: "0.82rem", color: "#a78bfa", fontWeight: 600 }}>Immediate Joiner · Available for Opportunities</span>
+          {/* Status pill */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 9999, padding: "0.35rem 1.1rem", marginBottom: "1.8rem", animation: "fadeUp 0.6s ease both" }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", animation: "ping 2s ease infinite", boxShadow: "0 0 6px #4ade80" }} />
+            <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "#a78bfa" }}>Immediate Joiner · Open to Opportunities</span>
           </div>
 
           {/* Name */}
-          <h1 style={{ margin: "0 0 0.5rem", fontSize: "clamp(3.2rem, 9vw, 6.5rem)", fontWeight: 900, lineHeight: 1.0, letterSpacing: "-0.03em", animation: "fadeUp 0.7s ease 0.1s both" }}>
-            <span style={{ background: "linear-gradient(135deg,#c4b5fd,#818cf8,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Mubarak </span>
-            <span style={{ background: "linear-gradient(135deg,#f9a8d4,#fb923c,#facc15)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ansari</span>
+          <h1 style={{ margin: "0 0 0.75rem", fontSize: "clamp(3rem,9vw,6rem)", fontWeight: 900, letterSpacing: "-0.04em", lineHeight: 1.05, animation: "fadeUp 0.7s ease 0.1s both" }}>
+            <span style={{ background: "linear-gradient(135deg,#c4b5fd 0%,#818cf8 40%,#67e8f9 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              Mubarak Ansari
+            </span>
           </h1>
 
-          {/* Typewriter role */}
-          <div style={{ height: "2.5rem", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem", animation: "fadeUp 0.7s ease 0.2s both" }}>
-            <span style={{ fontSize: "clamp(1.1rem,2.8vw,1.6rem)", color: "#94a3b8", fontWeight: 500 }}>
-              {role}
-              <span style={{ color: "#a78bfa", animation: "blink 0.9s infinite" }}>|</span>
+          {/* Typewriter */}
+          <div style={{ height: "2.2rem", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem", animation: "fadeUp 0.7s ease 0.2s both" }}>
+            <span style={{ fontSize: "clamp(1rem,2.5vw,1.4rem)", color: C.textSec, fontWeight: 400 }}>
+              {role}<span style={{ color: C.violet, animation: "blink 1s step-end infinite" }}>|</span>
             </span>
           </div>
 
-          <p style={{ color: "#475569", fontSize: "1rem", maxWidth: 640, margin: "0 auto 2.25rem", lineHeight: 1.7, animation: "fadeUp 0.7s ease 0.3s both" }}>
-            Immediate Joiner &nbsp;·&nbsp; Android Developer with 5+ Years of Expertise in Compose, Kotlin &amp; Java &nbsp;·&nbsp; React Native
+          {/* Tagline */}
+          <p style={{ color: C.textMut, fontSize: "0.95rem", maxWidth: 580, margin: "0 auto 0.75rem", lineHeight: 1.8, animation: "fadeUp 0.7s ease 0.3s both" }}>
+            Android Developer with 5+ Years of Expertise in Compose, Kotlin &amp; Java · React Native
           </p>
 
-          {/* CTA */}
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", animation: "fadeUp 0.7s ease 0.4s both", marginBottom: "2.5rem" }}>
-            <a href="mailto:mubarakansari715@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.8rem 2rem", borderRadius: 12, background: "linear-gradient(135deg,#a78bfa,#818cf8)", color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.95rem", boxShadow: "0 4px 24px rgba(167,139,250,0.35)", transition: "transform 0.2s, box-shadow 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(167,139,250,0.5)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(167,139,250,0.35)"; }}>
-              ✉ Hire Me
+          {/* CTA row */}
+          <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap", margin: "2rem 0 2.25rem", animation: "fadeUp 0.7s ease 0.4s both" }}>
+            <a href="mailto:mubarakansari715@gmail.com" style={{ padding: "0.75rem 2rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.92rem", boxShadow: "0 4px 22px rgba(139,92,246,0.4)", transition: "opacity 0.2s,transform 0.2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
+              ✉ Get In Touch
             </a>
-            <a href="https://github.com/mubarakansari715" target="_blank" rel="noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.8rem 2rem", borderRadius: 12, border: "1.5px solid #1e293b", color: "#94a3b8", fontWeight: 600, textDecoration: "none", fontSize: "0.95rem", background: "rgba(255,255,255,0.02)", transition: "border-color 0.2s, color 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#a78bfa"; (e.currentTarget as HTMLElement).style.color = "#e2e8f0"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1e293b"; (e.currentTarget as HTMLElement).style.color = "#94a3b8"; }}>
-              ⌥ GitHub
+            <a href="https://github.com/mubarakansari715" target="_blank" rel="noreferrer" style={{ padding: "0.75rem 2rem", borderRadius: 10, border: `1px solid ${C.border}`, color: C.textSec, fontWeight: 600, textDecoration: "none", fontSize: "0.92rem", background: "rgba(255,255,255,0.02)", transition: "border-color 0.2s,color 0.2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.violet; (e.currentTarget as HTMLElement).style.color = C.textPri; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.border; (e.currentTarget as HTMLElement).style.color = C.textSec; }}>
+              GitHub ↗
             </a>
-            <a href="https://www.linkedin.com/in/mubarak-ansari-2a139a148/" target="_blank" rel="noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.8rem 2rem", borderRadius: 12, border: "1.5px solid #1e293b", color: "#94a3b8", fontWeight: 600, textDecoration: "none", fontSize: "0.95rem", background: "rgba(255,255,255,0.02)", transition: "border-color 0.2s, color 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "#38bdf8"; (e.currentTarget as HTMLElement).style.color = "#e2e8f0"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "#1e293b"; (e.currentTarget as HTMLElement).style.color = "#94a3b8"; }}>
-              ⧉ LinkedIn
+            <a href="https://www.linkedin.com/in/mubarak-ansari-2a139a148/" target="_blank" rel="noreferrer" style={{ padding: "0.75rem 2rem", borderRadius: 10, border: `1px solid ${C.border}`, color: C.textSec, fontWeight: 600, textDecoration: "none", fontSize: "0.92rem", background: "rgba(255,255,255,0.02)", transition: "border-color 0.2s,color 0.2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = C.cyan; (e.currentTarget as HTMLElement).style.color = C.textPri; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = C.border; (e.currentTarget as HTMLElement).style.color = C.textSec; }}>
+              LinkedIn ↗
             </a>
           </div>
 
           {/* Award badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(250,204,21,0.07)", border: "1px solid rgba(250,204,21,0.2)", borderRadius: 10, padding: "0.5rem 1.25rem", animation: "fadeUp 0.7s ease 0.5s both" }}>
-            <span>🏆</span>
-            <span style={{ fontSize: "0.83rem", color: "#facc15", fontWeight: 600 }}>Employee of the Quarter 2024 — Bacancy Technology</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(250,204,21,0.06)", border: "1px solid rgba(250,204,21,0.18)", borderRadius: 8, padding: "0.45rem 1.1rem", animation: "fadeUp 0.7s ease 0.5s both" }}>
+            <span style={{ fontSize: "0.95rem" }}>🏆</span>
+            <span style={{ fontSize: "0.8rem", color: "#fbbf24", fontWeight: 600 }}>Employee of the Quarter 2024 · Bacancy Technology</span>
           </div>
         </div>
 
-        {/* Scroll arrow */}
-        <div style={{ position: "absolute", bottom: "2rem", left: "50%", transform: "translateX(-50%)", animation: "scrollBounce 2s ease-in-out infinite", opacity: 0.35 }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+        {/* Scroll cue */}
+        <div style={{ position: "absolute", bottom: "1.75rem", left: "50%", transform: "translateX(-50%)", animation: "scrollDown 2s ease-in-out infinite", opacity: 0.3 }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.textSec} strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
         </div>
       </section>
 
-      {/* ════ STATS ════ */}
-      <FadeSection>
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "4rem 2rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem" }}>
-            {STATS.map((s) => <StatCard key={s.label} {...s} />)}
+      {/* ══════════════════ STATS ══════════════════ */}
+      <Divider />
+      <Reveal>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "3.5rem 2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: "1px", background: C.border, borderRadius: 16, overflow: "hidden", border: `1px solid ${C.border}` }}>
+            {STATS.map(s => {
+              const { ref, inView } = useInViewLocal();
+              const n = useCount(s.n, inView);
+              return (
+                <div key={s.label} ref={ref} style={{ background: C.surface, padding: "2rem 1.5rem", textAlign: "center" }}>
+                  <p style={{ margin: 0, fontSize: "2.6rem", fontWeight: 900, background: C.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1 }}>{n}{s.s}</p>
+                  <p style={{ margin: "0.4rem 0 0", color: C.textMut, fontSize: "0.78rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ ABOUT ════ */}
-      <FadeSection id="about">
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "5rem 2rem" }}>
-          <SectionHeading title="About Me" sub="Who I Am" accent="#a78bfa" />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px,1fr))", gap: "1.5rem" }}>
-            <div style={{ background: "linear-gradient(135deg, rgba(167,139,250,0.06), rgba(56,189,248,0.04))", border: "1px solid rgba(167,139,250,0.15)", borderRadius: 20, padding: "2rem" }}>
-              <p style={{ color: "#94a3b8", lineHeight: 1.85, margin: 0, fontSize: "0.96rem" }}>
-                Highly motivated Software Engineer with <strong style={{ color: "#c4b5fd" }}>5+ years of experience</strong> delivering high-quality Android applications. Proficient in <strong style={{ color: "#38bdf8" }}>MVVM, Clean Architecture</strong> and Jetpack components to build efficient, user-friendly products.
+      {/* ══════════════════ ABOUT ══════════════════ */}
+      <Reveal id="about">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2rem" }}>
+          <SecLabel text="Who I Am" />
+          <SecTitle text="About Me" />
+          <SecBar />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.5rem" }}>
+            {/* Bio card */}
+            <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "2rem" }}>
+              <p style={{ color: C.textSec, lineHeight: 1.85, margin: "0 0 1rem", fontSize: "0.95rem" }}>
+                Highly motivated Software Engineer with <strong style={{ color: C.textPri }}>5+ years of experience</strong> delivering high-quality Android applications. Proficient in <strong style={{ color: "#c4b5fd" }}>MVVM, Clean Architecture</strong> and Jetpack components to build efficient, user-friendly products.
               </p>
-              <p style={{ color: "#64748b", lineHeight: 1.8, margin: "1rem 0 0", fontSize: "0.9rem" }}>
-                Experienced in managing App Store & Play Store release cycles, CI/CD pipelines (Fastlane, Bitrise, GitHub Actions), performance profiling, JUnit testing, and Root Cause Analysis to ensure production stability.
+              <p style={{ color: C.textMut, lineHeight: 1.8, margin: 0, fontSize: "0.9rem" }}>
+                Experienced in managing Play Store release cycles, CI/CD pipelines (Fastlane, Bitrise, GitHub Actions), performance profiling, JUnit testing, and Root Cause Analysis to ensure production stability.
               </p>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+            {/* Info grid */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               {[
                 { icon: "📍", label: "Location", value: "Ahmedabad, Gujarat, India" },
-                { icon: "✉️", label: "Email", value: "mubarakansari715@gmail.com" },
-                { icon: "📞", label: "Phone", value: "+91 9998508484" },
-                { icon: "🎓", label: "Degree", value: "B.E. IT — CGPI 8.23" },
-                { icon: "🗣️", label: "Languages", value: "English · Hindi · Gujarati · Bhojpuri" },
+                { icon: "✉️", label: "Email",    value: "mubarakansari715@gmail.com" },
+                { icon: "📞", label: "Phone",    value: "+91 9998508484" },
+                { icon: "🎓", label: "Degree",   value: "B.E. IT — CGPI 8.23" },
+                { icon: "🗣️", label: "Languages",value: "English · Hindi · Gujarati · Bhojpuri" },
               ].map(({ icon, label, value }) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: "0.85rem", background: "rgba(255,255,255,0.025)", border: "1px solid #1e293b", borderRadius: 12, padding: "0.7rem 1rem" }}>
-                  <span style={{ fontSize: "1.1rem", flexShrink: 0 }}>{icon}</span>
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: "0.85rem", background: "rgba(255,255,255,0.02)", border: `1px solid ${C.border}`, borderRadius: 10, padding: "0.65rem 1rem" }}>
+                  <span style={{ fontSize: "1rem", width: 22, textAlign: "center", flexShrink: 0 }}>{icon}</span>
                   <div>
-                    <p style={{ margin: 0, fontSize: "0.7rem", color: "#475569", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{label}</p>
-                    <p style={{ margin: 0, fontSize: "0.87rem", color: "#94a3b8" }}>{value}</p>
+                    <p style={{ margin: 0, fontSize: "0.68rem", color: C.textMut, textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 700 }}>{label}</p>
+                    <p style={{ margin: 0, fontSize: "0.88rem", color: C.textSec }}>{value}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ SKILLS ════ */}
-      <FadeSection id="skills">
-        <div style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid #0f172a", borderBottom: "1px solid #0f172a", padding: "5rem 2rem" }}>
-          <div style={{ maxWidth: 860, margin: "0 auto" }}>
-            <SectionHeading title="Technical Skills" sub="What I Know" accent="#38bdf8" />
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px,1fr))", gap: "0 3rem" }}>
-              {SKILLS.map((s, i) => (
-                <SkillBar key={s.label} label={s.label} pct={s.pct} color={s.color} delay={i * 80} />
+      {/* ══════════════════ SKILLS ══════════════════ */}
+      <Reveal id="skills">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2rem" }}>
+          <SecLabel text="What I Know" />
+          <SecTitle text="Technical Skills" />
+          <SecBar color={C.cyan} />
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
+            {SKILL_GROUPS.map(group => (
+              <SkillGroup key={group.title} {...group} />
+            ))}
+          </div>
+
+          {/* Tools */}
+          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "1.75rem" }}>
+            <p style={{ margin: "0 0 1rem", fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", color: C.textMut }}>Tools & Practices</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.25rem" }}>
+              {TOOLS.map(t => (
+                <span key={t} style={{ padding: "0.25rem 0.8rem", borderRadius: 6, background: "rgba(255,255,255,0.03)", border: `1px solid ${C.border}`, color: C.textMut, fontSize: "0.8rem", fontWeight: 500 }}>{t}</span>
               ))}
             </div>
 
-            {/* Tool pills */}
-            <div style={{ marginTop: "2.5rem" }}>
-              <p style={{ color: "#475569", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.85rem", fontWeight: 600 }}>Tools & Practices</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.55rem" }}>
-                {["Android SDK", "React Native", "Jetpack Components", "Version Catalog", "Stripe / PayPal", "KtLint", "GitHub Actions", "Fastlane", "Bitrise", "Agile / Scrum", "Azure DevOps", "Jira", "WebEngage", "Huawei SDK", "Sentry", "WebSockets", "Git / GitLab"].map((t) => (
-                  <span key={t} style={{ padding: "0.3rem 0.85rem", borderRadius: 9999, border: "1px solid #1e293b", color: "#64748b", fontSize: "0.82rem", background: "rgba(255,255,255,0.02)", fontWeight: 500 }}>{t}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* AI Tools */}
-            <div style={{ marginTop: "2rem", background: "linear-gradient(135deg, rgba(167,139,250,0.06), rgba(56,189,248,0.04))", border: "1px solid rgba(167,139,250,0.15)", borderRadius: 16, padding: "1.5rem" }}>
-              <p style={{ color: "#a78bfa", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.85rem", fontWeight: 700 }}>🤖 AI Tools</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.55rem" }}>
-                {[
-                  { name: "Cursor", color: "#a78bfa" },
-                  { name: "Claude AI", color: "#f472b6" },
-                  { name: "Antigravity", color: "#38bdf8" },
-                ].map(({ name, color }) => (
-                  <span key={name} style={{ padding: "0.35rem 1rem", borderRadius: 9999, border: `1.5px solid ${color}44`, background: `${color}11`, color, fontSize: "0.85rem", fontWeight: 700 }}>✦ {name}</span>
-                ))}
-              </div>
+            <p style={{ margin: "0 0 0.75rem", fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", background: C.grad, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>🤖 AI-Assisted Development</p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+              {AI_TOOLS.map(t => (
+                <span key={t} style={{ padding: "0.3rem 0.95rem", borderRadius: 6, background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.3)", color: "#c4b5fd", fontSize: "0.82rem", fontWeight: 700 }}>✦ {t}</span>
+              ))}
             </div>
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ EXPERIENCE ════ */}
-      <FadeSection id="experience">
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "5rem 2rem" }}>
-          <SectionHeading title="Experience" sub="Where I've Worked" accent="#f472b6" />
-          <div style={{ position: "relative" }}>
-            {/* vertical line */}
-            <div style={{ position: "absolute", left: 22, top: 0, bottom: 0, width: 2, background: "linear-gradient(to bottom, #a78bfa44, #38bdf844, transparent)", borderRadius: 9999 }} />
+      {/* ══════════════════ EXPERIENCE ══════════════════ */}
+      <Reveal id="experience">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2rem" }}>
+          <SecLabel text="Where I've Worked" />
+          <SecTitle text="Experience" />
+          <SecBar color="#f472b6" />
 
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             {EXPERIENCE.map((e, i) => (
-              <div key={e.company} style={{ display: "flex", gap: "1.5rem", marginBottom: "2.5rem", position: "relative" }}>
-                {/* dot */}
-                <div style={{ flexShrink: 0, width: 46, height: 46, borderRadius: "50%", background: `${e.color}18`, border: `2px solid ${e.color}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", zIndex: 1 }}>
-                  {e.icon}
+              <div key={e.company} style={{ display: "flex", gap: "0", position: "relative" }}>
+                {/* Timeline spine */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginRight: "1.5rem", flexShrink: 0 }}>
+                  <div style={{ width: 12, height: 12, borderRadius: "50%", background: i === 0 ? C.violet : C.cyan, boxShadow: `0 0 12px ${i === 0 ? C.violet : C.cyan}`, flexShrink: 0, marginTop: "1.5rem" }} />
+                  {i < EXPERIENCE.length - 1 && <div style={{ width: 2, flex: 1, background: `linear-gradient(to bottom, ${C.violet}40, ${C.cyan}20)`, minHeight: 40 }} />}
                 </div>
 
-                <div style={{ flex: 1, background: "rgba(255,255,255,0.025)", border: `1px solid ${e.color}22`, borderRadius: 18, padding: "1.5rem", transition: "border-color 0.3s" }}
-                  onMouseEnter={el => (el.currentTarget.style.borderColor = `${e.color}55`)}
-                  onMouseLeave={el => (el.currentTarget.style.borderColor = `${e.color}22`)}>
-                  <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
+                {/* Card */}
+                <div style={{ flex: 1, background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "1.75rem", transition: "border-color 0.3s" }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(139,92,246,0.35)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = C.border)}>
+                  <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.1rem" }}>
                     <div>
-                      <h3 style={{ margin: 0, color: e.color, fontWeight: 800, fontSize: "1.1rem" }}>{e.company}</h3>
-                      <p style={{ margin: "0.2rem 0 0", color: "#64748b", fontSize: "0.88rem", fontWeight: 500 }}>{e.role}</p>
+                      <h3 style={{ margin: 0, fontWeight: 800, fontSize: "1.1rem", color: C.textPri }}>{e.company}</h3>
+                      <p style={{ margin: "0.15rem 0 0", color: C.textMut, fontSize: "0.87rem", fontWeight: 500 }}>{e.role}</p>
                     </div>
-                    <span style={{ padding: "0.25rem 0.9rem", borderRadius: 9999, background: `${e.color}12`, border: `1px solid ${e.color}35`, color: e.color, fontSize: "0.78rem", fontWeight: 700, alignSelf: "flex-start", whiteSpace: "nowrap" }}>
-                      {e.period}
-                    </span>
+                    <span style={{ padding: "0.25rem 0.85rem", borderRadius: 6, background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.25)", color: "#c4b5fd", fontSize: "0.78rem", fontWeight: 600, alignSelf: "flex-start", whiteSpace: "nowrap" }}>{e.period}</span>
                   </div>
-                  <ul style={{ margin: 0, paddingLeft: "1.1rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                    {e.points.map((p) => (
-                      <li key={p} style={{ color: "#94a3b8", fontSize: "0.9rem", lineHeight: 1.65 }}>{p}</li>
-                    ))}
+                  <ul style={{ margin: 0, paddingLeft: "1.15rem", display: "flex", flexDirection: "column", gap: "0.38rem" }}>
+                    {e.points.map(p => <li key={p} style={{ color: C.textSec, fontSize: "0.9rem", lineHeight: 1.65 }}>{p}</li>)}
                   </ul>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ PROJECTS ════ */}
-      <FadeSection id="projects">
-        <div style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid #0f172a", borderBottom: "1px solid #0f172a", padding: "5rem 2rem" }}>
-          <div style={{ maxWidth: 860, margin: "0 auto" }}>
-            <SectionHeading title="Projects" sub="What I've Built" accent="#34d399" />
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-              {PROJECTS.map((p) => (
-                <div key={p.name}
-                  style={{ background: "#0a0a18", border: `1px solid ${p.color}22`, borderRadius: 20, padding: "2rem", transition: "box-shadow 0.25s, border-color 0.25s", cursor: "default" }}
-                  onMouseEnter={el => { el.currentTarget.style.boxShadow = `0 12px 40px ${p.color}15`; el.currentTarget.style.borderColor = `${p.color}55`; }}
-                  onMouseLeave={el => { el.currentTarget.style.boxShadow = "none"; el.currentTarget.style.borderColor = `${p.color}22`; }}>
+      {/* ══════════════════ PROJECTS ══════════════════ */}
+      <Reveal id="projects">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2rem" }}>
+          <SecLabel text="What I've Built" />
+          <SecTitle text="Projects" />
+          <SecBar color={C.cyan} />
 
-                  {/* Header */}
-                  <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "0.75rem" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
-                      <span style={{ fontSize: "1.5rem" }}>{p.icon}</span>
-                      <div>
-                        <h3 style={{ margin: 0, color: p.color, fontWeight: 800, fontSize: "1.15rem" }}>{p.name}</h3>
-                        <p style={{ margin: 0, color: "#334155", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{p.tag}</p>
-                      </div>
-                    </div>
-                    {/* Tech pills */}
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", alignSelf: "flex-start" }}>
-                      {p.tech.map((t) => (
-                        <span key={t} style={{ padding: "0.2rem 0.65rem", borderRadius: 9999, background: `${p.color}0f`, border: `1px solid ${p.color}30`, color: p.color, fontSize: "0.75rem", fontWeight: 600 }}>{t}</span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Description */}
-                  <p style={{ margin: "0 0 1rem", color: "#64748b", fontSize: "0.9rem", lineHeight: 1.75, borderLeft: `3px solid ${p.color}44`, paddingLeft: "0.85rem" }}>{p.desc}</p>
-
-                  {/* Roles & Responsibilities */}
-                  <div style={{ background: "rgba(255,255,255,0.02)", borderRadius: 12, padding: "1rem 1.25rem" }}>
-                    <p style={{ margin: "0 0 0.6rem", fontSize: "0.75rem", color: p.color, textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 700 }}>Roles &amp; Responsibilities</p>
-                    <ul style={{ margin: 0, paddingLeft: "1.1rem", display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                      {p.points.map((pt) => (
-                        <li key={pt} style={{ color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.65 }}>{pt}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            {PROJECTS.map((p, i) => (
+              <ProjectCard key={p.name} project={p} index={i} />
+            ))}
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ EDUCATION ════ */}
-      <FadeSection id="education">
-        <div style={{ maxWidth: 860, margin: "0 auto", padding: "5rem 2rem" }}>
-          <SectionHeading title="Education" sub="Academic Background" accent="#facc15" />
-          <div style={{ background: "linear-gradient(135deg, rgba(250,204,21,0.05), rgba(251,146,60,0.04))", border: "1px solid rgba(250,204,21,0.2)", borderRadius: 20, padding: "2rem", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", alignItems: "center" }}>
-            <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-              <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(250,204,21,0.12)", border: "1.5px solid rgba(250,204,21,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0 }}>🎓</div>
-              <div>
-                <h3 style={{ margin: 0, color: "#facc15", fontWeight: 800, fontSize: "1.1rem" }}>Gyanmanjari Institute of Technology</h3>
-                <p style={{ margin: "0.25rem 0 0", color: "#94a3b8", fontSize: "0.9rem" }}>Bachelor of Engineering — Information Technology</p>
-                <p style={{ margin: "0.2rem 0 0", color: "#64748b", fontSize: "0.85rem" }}>CGPI: <strong style={{ color: "#facc15" }}>8.23 / 10</strong></p>
-              </div>
+      {/* ══════════════════ EDUCATION ══════════════════ */}
+      <Reveal id="education">
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "5rem 2rem" }}>
+          <SecLabel text="Academic Background" />
+          <SecTitle text="Education" />
+          <SecBar color="#fbbf24" />
+
+          <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "2rem", display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", flexShrink: 0 }}>🎓</div>
+            <div style={{ flex: 1 }}>
+              <h3 style={{ margin: 0, color: C.textPri, fontWeight: 800, fontSize: "1.1rem" }}>Gyanmanjari Institute of Technology</h3>
+              <p style={{ margin: "0.2rem 0 0", color: C.textSec, fontSize: "0.9rem" }}>Bachelor of Engineering — Information Technology</p>
+              <p style={{ margin: "0.15rem 0 0", color: C.textMut, fontSize: "0.85rem" }}>CGPI: <strong style={{ color: "#fbbf24" }}>8.23 / 10</strong></p>
             </div>
-            <div style={{ padding: "0.5rem 1.25rem", borderRadius: 12, background: "rgba(250,204,21,0.1)", border: "1px solid rgba(250,204,21,0.25)", color: "#facc15", fontSize: "0.9rem", fontWeight: 700, alignSelf: "flex-start" }}>2021</div>
+            <span style={{ padding: "0.4rem 1rem", borderRadius: 8, background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", color: "#fbbf24", fontWeight: 700, fontSize: "0.88rem" }}>2021</span>
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
+      <Divider />
 
-      {/* ════ CONTACT ════ */}
-      <FadeSection id="contact">
-        <div style={{ background: "rgba(255,255,255,0.015)", borderTop: "1px solid #0f172a", padding: "5rem 2rem 4rem" }}>
-          <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
-            <SectionHeading title="Get In Touch" sub="Contact" accent="#a78bfa" />
-            <p style={{ color: "#64748b", lineHeight: 1.75, marginBottom: "2.5rem", fontSize: "0.95rem" }}>
-              I&apos;m open to full-time roles, freelance projects, or interesting collaborations. Drop me a message and I&apos;ll get back to you!
-            </p>
+      {/* ══════════════════ CONTACT ══════════════════ */}
+      <Reveal id="contact">
+        <div style={{ maxWidth: 620, margin: "0 auto", padding: "5rem 2rem 6rem", textAlign: "center" }}>
+          <SecLabel text="Get In Touch" />
+          <SecTitle text="Let's Work Together" />
+          <div style={{ width: 40, height: 3, borderRadius: 9999, background: C.grad, margin: "0 auto 1.75rem" }} />
 
-            <a href="mailto:mubarakansari715@gmail.com"
-              style={{ display: "inline-block", padding: "0.9rem 2.5rem", borderRadius: 14, background: "linear-gradient(135deg,#a78bfa,#818cf8)", color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "1rem", boxShadow: "0 4px 24px rgba(167,139,250,0.35)", marginBottom: "2.5rem", transition: "transform 0.2s, box-shadow 0.2s" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(167,139,250,0.5)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 24px rgba(167,139,250,0.35)"; }}>
-              ✉ mubarakansari715@gmail.com
-            </a>
+          <p style={{ color: C.textMut, lineHeight: 1.8, marginBottom: "2.25rem", fontSize: "0.95rem" }}>
+            I&apos;m open to full-time roles, freelance projects, and interesting collaborations. Drop me a line!
+          </p>
 
-            <div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-              {[
-                { label: "GitHub", href: "https://github.com/mubarakansari715", color: "#94a3b8" },
-                { label: "LinkedIn", href: "https://www.linkedin.com/in/mubarak-ansari-2a139a148/", color: "#38bdf8" },
-                { label: "Phone: +91 9998508484", href: "tel:+919998508484", color: "#34d399" },
-              ].map(({ label, href, color }) => (
-                <a key={label} href={href} target="_blank" rel="noreferrer"
-                  style={{ padding: "0.55rem 1.25rem", borderRadius: 10, border: `1.5px solid ${color}33`, color, fontWeight: 600, fontSize: "0.88rem", textDecoration: "none", transition: "background 0.2s" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = `${color}12`}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
-                  {label}
-                </a>
-              ))}
-            </div>
+          <a href="mailto:mubarakansari715@gmail.com" style={{ display: "inline-block", padding: "0.85rem 2.5rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.95rem", boxShadow: "0 4px 24px rgba(139,92,246,0.35)", marginBottom: "2rem", transition: "opacity 0.2s,transform 0.2s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
+            mubarakansari715@gmail.com
+          </a>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: "0.85rem", flexWrap: "wrap" }}>
+            {[
+              { label: "GitHub",   href: "https://github.com/mubarakansari715",                    color: C.textSec },
+              { label: "LinkedIn", href: "https://www.linkedin.com/in/mubarak-ansari-2a139a148/",  color: C.cyan },
+              { label: "+91 9998508484", href: "tel:+919998508484",                                color: "#4ade80" },
+            ].map(({ label, href, color }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" style={{ padding: "0.5rem 1.2rem", borderRadius: 8, border: `1px solid ${color}33`, color, fontSize: "0.88rem", fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = `${color}10`}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
+                {label}
+              </a>
+            ))}
           </div>
         </div>
-      </FadeSection>
+      </Reveal>
 
-      {/* ════ FOOTER ════ */}
-      <footer style={{ borderTop: "1px solid #0f172a", padding: "1.75rem 2rem", textAlign: "center" }}>
-        <p style={{ margin: 0, color: "#1e293b", fontSize: "0.82rem" }}>
-          © 2024 Mubarak Ansari · Built with Next.js · Deployed on Vercel
+      {/* ══════════════════ FOOTER ══════════════════ */}
+      <div style={{ borderTop: `1px solid ${C.border}`, padding: "1.5rem 2rem", textAlign: "center" }}>
+        <p style={{ margin: 0, color: C.textMut, fontSize: "0.8rem" }}>
+          © 2024 Mubarak Ansari · Android Software Engineer · Built with Next.js &amp; deployed on Vercel
         </p>
-      </footer>
+      </div>
 
+      {/* ══════════════════ STYLES ══════════════════ */}
       <style>{`
-        @keyframes fadeUp      { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes blink       { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes pulse       { 0%,100%{opacity:1;box-shadow:0 0 8px #4ade80} 50%{opacity:0.6;box-shadow:0 0 16px #4ade80} }
-        @keyframes floatP      { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-20px) rotate(200deg)} }
-        @keyframes orb1        { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
-        @keyframes orb2        { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,20px)} }
-        @keyframes scrollBounce{ 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(9px)} }
-        .nav-mobile { display: none !important; }
-        @media (max-width: 640px) {
-          .nav-desktop { display: none !important; }
-          .nav-mobile  { display: flex !important; }
+        @keyframes fadeUp    { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes blink     { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes ping      { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        @keyframes floatDot  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+        @keyframes orbA      { 0%,100%{transform:translate(0,0)} 50%{transform:translate(35px,25px)} }
+        @keyframes orbB      { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-25px,18px)} }
+        @keyframes scrollDown{ 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+        @keyframes barFill   { from{width:0} }
+        .desk { display:flex !important }
+        .mob  { display:none !important }
+        @media(max-width:640px){
+          .desk { display:none !important }
+          .mob  { display:flex !important }
         }
       `}</style>
     </div>
   );
+}
+
+/* ─────────────── SKILL GROUP ────────────────────────── */
+function SkillGroup({ title, icon, items }: { title: string; icon: string; items: { label: string; pct: number }[] }) {
+  const { ref, inView } = useInViewLocal();
+  return (
+    <div ref={ref} style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, padding: "1.5rem" }}>
+      <p style={{ margin: "0 0 1.25rem", fontWeight: 700, fontSize: "0.85rem", color: C.textPri }}>
+        <span style={{ marginRight: "0.5rem" }}>{icon}</span>{title}
+      </p>
+      {items.map((item, i) => (
+        <div key={item.label} style={{ marginBottom: i < items.length - 1 ? "0.85rem" : 0 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.3rem" }}>
+            <span style={{ color: C.textSec, fontSize: "0.82rem", fontWeight: 500 }}>{item.label}</span>
+            <span style={{ color: C.violet, fontSize: "0.75rem", fontWeight: 700 }}>{item.pct}%</span>
+          </div>
+          <div style={{ height: 5, background: "rgba(255,255,255,0.05)", borderRadius: 9999, overflow: "hidden" }}>
+            <div style={{ height: "100%", borderRadius: 9999, background: C.grad, width: inView ? `${item.pct}%` : "0%", transition: `width 1.1s cubic-bezier(0.22,1,0.36,1) ${i * 100}ms`, boxShadow: `0 0 8px ${C.violet}44` }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────── PROJECT CARD ───────────────────────── */
+function ProjectCard({ project: p, index }: { project: typeof PROJECTS[0]; index: number }) {
+  const [open, setOpen] = useState(false);
+  const accentColors = [C.violet, "#f472b6", "#818cf8", "#34d399", "#fb923c", C.cyan];
+  const accent = accentColors[index % accentColors.length];
+
+  return (
+    <div style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 16, overflow: "hidden", transition: "border-color 0.3s" }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = `${accent}40`)}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = C.border)}>
+
+      {/* Card header */}
+      <div style={{ padding: "1.75rem 2rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "0.85rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <span style={{ fontSize: "1.5rem" }}>{p.icon}</span>
+            <div>
+              <h3 style={{ margin: 0, color: C.textPri, fontWeight: 800, fontSize: "1.1rem" }}>{p.name}</h3>
+              <p style={{ margin: 0, color: C.textMut, fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>{p.tag}</p>
+            </div>
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+            {p.tech.map(t => <Tag key={t} label={t} color={accent} />)}
+          </div>
+        </div>
+
+        {/* Left-border description */}
+        <p style={{ margin: "0 0 1.1rem", color: C.textSec, fontSize: "0.9rem", lineHeight: 1.75, paddingLeft: "0.85rem", borderLeft: `3px solid ${accent}55` }}>{p.desc}</p>
+
+        {/* Toggle R&R */}
+        <button onClick={() => setOpen(!open)} style={{ background: "none", border: `1px solid ${accent}30`, borderRadius: 8, padding: "0.4rem 1rem", color: accent, fontSize: "0.78rem", fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: "0.35rem", transition: "background 0.2s" }}
+          onMouseEnter={e => (e.currentTarget.style.background = `${accent}10`)}
+          onMouseLeave={e => (e.currentTarget.style.background = "none")}>
+          {open ? "▲ Hide" : "▼ Roles & Responsibilities"}
+        </button>
+      </div>
+
+      {/* Expandable R&R */}
+      {open && (
+        <div style={{ borderTop: `1px solid ${C.border}`, padding: "1.25rem 2rem 1.75rem", background: "rgba(255,255,255,0.015)" }}>
+          <p style={{ margin: "0 0 0.75rem", fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: accent }}>Roles &amp; Responsibilities</p>
+          <ul style={{ margin: 0, paddingLeft: "1.15rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            {p.points.map(pt => <li key={pt} style={{ color: C.textSec, fontSize: "0.88rem", lineHeight: 1.7 }}>{pt}</li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* helper — inline version of useInView to avoid rule-of-hooks issues in map */
+function useInViewLocal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
 }
