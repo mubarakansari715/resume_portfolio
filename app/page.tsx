@@ -380,7 +380,7 @@ export default function Home() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
               {[
-                { icon: "📍", label: "Location", value: "Palitana, Bhavnagar, India" },
+                { icon: "📍", label: "Location", value: "Ahmedabad, Gujarat, India" },
                 { icon: "✉️", label: "Email", value: "mubarakansari715@gmail.com" },
                 { icon: "📞", label: "Phone", value: "+91 9998508484" },
                 { icon: "🎓", label: "Degree", value: "B.E. IT — CGPI 8.23" },
