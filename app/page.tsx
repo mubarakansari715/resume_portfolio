@@ -6,26 +6,26 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const NAV_LINKS = ["About", "Skills", "Experience", "Projects", "Education", "Contact"];
 
-const ROLES = ["Android Engineer", "Kotlin Developer", "MVVM Architect", "Mobile Developer"];
+const ROLES = ["Android Engineer", "Kotlin Developer", "MVVM Architect", "Jetpack Compose Dev", "Mobile Developer"];
 
 const STATS = [
-  { value: 4, suffix: "+", label: "Years Experience" },
+  { value: 5, suffix: "+", label: "Years Experience" },
   { value: 2, suffix: "", label: "Companies" },
-  { value: 4, suffix: "+", label: "Projects Shipped" },
+  { value: 6, suffix: "+", label: "Projects Shipped" },
   { value: 1, suffix: "", label: "Award Won" },
 ];
 
 const SKILLS = [
-  { label: "Kotlin", pct: 92, color: "#a78bfa" },
+  { label: "Kotlin", pct: 93, color: "#a78bfa" },
   { label: "Java", pct: 85, color: "#fb923c" },
-  { label: "MVVM / Clean Architecture", pct: 90, color: "#38bdf8" },
-  { label: "Jetpack Compose", pct: 65, color: "#34d399" },
-  { label: "Firebase & Crashlytics", pct: 82, color: "#f472b6" },
-  { label: "RESTful APIs & JSON", pct: 88, color: "#facc15" },
-  { label: "Dagger Hilt (DI)", pct: 80, color: "#a78bfa" },
-  { label: "Unit & UI Testing", pct: 75, color: "#38bdf8" },
-  { label: "Room Database", pct: 83, color: "#34d399" },
-  { label: "Coroutines / Async", pct: 85, color: "#fb923c" },
+  { label: "Jetpack Compose", pct: 80, color: "#34d399" },
+  { label: "MVVM / Clean Architecture", pct: 92, color: "#38bdf8" },
+  { label: "Dagger Hilt (DI)", pct: 85, color: "#f472b6" },
+  { label: "Firebase & Crashlytics", pct: 88, color: "#facc15" },
+  { label: "RESTful APIs & WebSockets", pct: 90, color: "#a78bfa" },
+  { label: "Room DB & Coroutines", pct: 87, color: "#38bdf8" },
+  { label: "CI/CD (Fastlane / Bitrise)", pct: 75, color: "#34d399" },
+  { label: "JUnit & Performance Profiling", pct: 78, color: "#fb923c" },
 ];
 
 const EXPERIENCE = [
@@ -36,9 +36,11 @@ const EXPERIENCE = [
     color: "#a78bfa",
     icon: "🚀",
     points: [
-      "Developed and enhanced Android apps using Kotlin/Java with Clean Architecture.",
-      "Designed and implemented new modules; migrated legacy code to modern patterns.",
-      "Handled Jira tasks/bugs and improved sprint delivery timelines.",
+      "Developed core features using Kotlin and Jetpack Compose with MVVM & Clean Architecture.",
+      "Implemented OTP verification with auto SMS detection and Firebase Analytics integration.",
+      "Wrote JUnit unit tests to validate business logic and improve code reliability.",
+      "Managed app publishing, release cycles and Play Store compliance.",
+      "Used GitHub Actions and Fastlane for CI/CD pipelines; tracked tasks via Azure DevOps.",
     ],
   },
   {
@@ -48,10 +50,12 @@ const EXPERIENCE = [
     color: "#38bdf8",
     icon: "💼",
     points: [
-      "Built and maintained multiple production Android applications.",
-      "Integrated Firebase Crashlytics, significantly reducing app crashes.",
-      "Enhanced multi-screen responsive support for mobile and tablet.",
-      "Implemented push notifications, maps, and analytics (Huawei SDK, WebEngage).",
+      "Built and maintained multiple production Android applications (Kotlin/Java).",
+      "Integrated Firebase Crashlytics and Sentry for crash monitoring and error detection.",
+      "Enhanced multi-screen responsive support for mobile and tablet form factors.",
+      "Implemented Huawei SDK for push notifications, maps, and analytics.",
+      "Added WebEngage and Google Analytics for user behaviour tracking.",
+      "Performed Root Cause Analysis (RCA) to ensure production stability.",
     ],
   },
 ];
@@ -62,32 +66,48 @@ const PROJECTS = [
     tag: "Professional & Social Connection",
     color: "#a78bfa",
     icon: "🔗",
-    tech: ["Kotlin", "OTP Auth", "Play Store", "Jira"],
-    desc: "Redesigned UI/UX, implemented OTP verification with auto-detection for seamless authentication. Published on Google Play Store.",
+    tech: ["Kotlin", "Jetpack Compose", "Firebase Analytics", "JUnit", "Azure DevOps"],
+    desc: "Platform connecting professionals across industries. Built core features with Kotlin + Jetpack Compose (MVVM), implemented OTP auto-detection, Firebase Crashlytics, Analytics, and published on Google Play Store.",
   },
   {
     name: "Seeking App",
     tag: "Luxury Dating Platform",
     color: "#f472b6",
     icon: "💎",
-    tech: ["Clean Architecture", "Fragments", "Kotlin"],
-    desc: "Migrated legacy Activities to Fragments with Clean Architecture. Developed new modules improving user engagement and retention.",
+    tech: ["Kotlin", "Clean Architecture", "Fragments", "Jira"],
+    desc: "Luxury dating app. Migrated legacy Activities to Fragments, implemented Clean Architecture, optimised performance, redesigned UI screens, and managed bug tracking via Jira.",
+  },
+  {
+    name: "IRA Financial",
+    tag: "Self-Directed Retirement App",
+    color: "#818cf8",
+    icon: "💰",
+    tech: ["Kotlin", "Firebase", "Fingerprint Auth", "WebView"],
+    desc: "Retirement account management app. Monitored Firebase crash reports daily, implemented fingerprint authentication, resolved WebView performance issues, and managed Play Store publishing.",
   },
   {
     name: "AlokozayShop",
     tag: "Grocery E-commerce",
     color: "#34d399",
     icon: "🛒",
-    tech: ["WebEngage", "Huawei SDK", "Multi-screen"],
-    desc: "Built full grocery shopping features, integrated WebEngage analytics and Huawei SDK for push notifications and maps.",
+    tech: ["Kotlin", "WebEngage", "Huawei SDK", "Sentry", "Firebase", "Azure DevOps"],
+    desc: "One-stop grocery delivery app. Integrated WebEngage and Huawei Analytics, added Huawei SDK for push notifications and maps, implemented Sentry for error detection, and added multi-screen (mobile/tablet) support.",
   },
   {
     name: "The Weed Tube",
     tag: "Video Sharing App",
     color: "#fb923c",
     icon: "🎬",
-    tech: ["Dark/Light Theme", "Azure DevOps", "Java"],
-    desc: "Enhanced UI with Dark/Light themes, integrated new features and maintained app stability by resolving Azure DevOps tracked bugs.",
+    tech: ["Java", "Kotlin", "Dark/Light Theme", "Firebase", "Azure DevOps"],
+    desc: "YouTube-style video sharing platform. Integrated Dark/Light themes, Firebase Crashlytics & notifications, rebuilt UI screens, and handled bug resolution via Azure DevOps.",
+  },
+  {
+    name: "Book My Table",
+    tag: "Restaurant Table Booking",
+    color: "#38bdf8",
+    icon: "🍽️",
+    tech: ["Java", "Kotlin", "Firebase", "REST API"],
+    desc: "Pre-book restaurant tables for parties and meetings with custom requirements (lighting, cake, etc.). Handled full Android development, Firebase Crashlytics, push notifications, and API integration.",
   },
 ];
 
@@ -318,7 +338,7 @@ export default function Home() {
           </div>
 
           <p style={{ color: "#475569", fontSize: "1rem", maxWidth: 560, margin: "0 auto 2.25rem", lineHeight: 1.7, animation: "fadeUp 0.7s ease 0.3s both" }}>
-            4+ years crafting high-quality Android experiences · Clean Architecture · Kotlin / Java · MVVM
+            5+ years crafting high-quality Android experiences · Kotlin · Jetpack Compose · Clean Architecture · CI/CD
           </p>
 
           {/* CTA */}
@@ -371,10 +391,10 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(270px,1fr))", gap: "1.5rem" }}>
             <div style={{ background: "linear-gradient(135deg, rgba(167,139,250,0.06), rgba(56,189,248,0.04))", border: "1px solid rgba(167,139,250,0.15)", borderRadius: 20, padding: "2rem" }}>
               <p style={{ color: "#94a3b8", lineHeight: 1.85, margin: 0, fontSize: "0.96rem" }}>
-                Software Engineer with <strong style={{ color: "#c4b5fd" }}>4+ years of experience</strong> building impactful Android applications. I specialize in <strong style={{ color: "#38bdf8" }}>Clean Architecture</strong> and scalable MVVM patterns that make codebases maintainable and teams faster.
+                Highly motivated Software Engineer with <strong style={{ color: "#c4b5fd" }}>5+ years of experience</strong> delivering high-quality Android applications. Proficient in <strong style={{ color: "#38bdf8" }}>MVVM, Clean Architecture</strong> and Jetpack components to build efficient, user-friendly products.
               </p>
               <p style={{ color: "#64748b", lineHeight: 1.8, margin: "1rem 0 0", fontSize: "0.9rem" }}>
-                Passionate about crafting intuitive UX, writing clean testable code, and always eager to tackle challenging engineering problems.
+                Experienced in managing App Store & Play Store release cycles, CI/CD pipelines (Fastlane, Bitrise, GitHub Actions), performance profiling, JUnit testing, and Root Cause Analysis to ensure production stability.
               </p>
             </div>
 
@@ -414,7 +434,7 @@ export default function Home() {
             <div style={{ marginTop: "2.5rem" }}>
               <p style={{ color: "#475569", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.85rem", fontWeight: 600 }}>Tools & Practices</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.55rem" }}>
-                {["Android SDK", "Agile / Scrum", "Azure DevOps", "Jira", "WebEngage", "Huawei SDK", "Sentry", "JSON Parsing", "Git"].map((t) => (
+                {["Android SDK", "Jetpack Components", "Version Catalog", "Stripe / PayPal", "KtLint", "GitHub Actions", "Fastlane", "Bitrise", "Agile / Scrum", "Azure DevOps", "Jira", "WebEngage", "Huawei SDK", "Sentry", "WebSockets", "Git / GitLab"].map((t) => (
                   <span key={t} style={{ padding: "0.3rem 0.85rem", borderRadius: 9999, border: "1px solid #1e293b", color: "#64748b", fontSize: "0.82rem", background: "rgba(255,255,255,0.02)", fontWeight: 500 }}>{t}</span>
                 ))}
               </div>
