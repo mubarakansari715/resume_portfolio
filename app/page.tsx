@@ -8,11 +8,11 @@ const GRAD = `linear-gradient(135deg,${V},${C})`;
 
 const T = {
   bg:      "#02020a",
-  surf:    "rgba(255,255,255,0.07)",   // brighter cards — more readable over canvas
-  border:  "rgba(255,255,255,0.11)",   // clearer borders
-  t1:      "#f8fafc",                  // brighter heading text
-  t2:      "#cbd5e1",                  // brighter body text
-  t3:      "#64748b",                  // slightly brighter muted text
+  surf:    "rgba(255,255,255,0.10)",   // uniform card background across all sections
+  border:  "rgba(255,255,255,0.15)",   // clearer borders
+  t1:      "#f8fafc",
+  t2:      "#cbd5e1",
+  t3:      "#64748b",
 };
 
 /* ─── DATA ───────────────────────────────────────────── */
