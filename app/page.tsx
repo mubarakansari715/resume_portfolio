@@ -324,8 +324,7 @@ export default function Home() {
 
           {/* Name */}
           <h1 style={{ margin: "0 0 0.5rem", fontSize: "clamp(3.2rem, 9vw, 6.5rem)", fontWeight: 900, lineHeight: 1.0, letterSpacing: "-0.03em", animation: "fadeUp 0.7s ease 0.1s both" }}>
-            <span style={{ background: "linear-gradient(135deg,#c4b5fd,#818cf8,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Mubarak</span>
-            <br />
+            <span style={{ background: "linear-gradient(135deg,#c4b5fd,#818cf8,#38bdf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Mubarak </span>
             <span style={{ background: "linear-gradient(135deg,#f9a8d4,#fb923c,#facc15)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>Ansari</span>
           </h1>
 
