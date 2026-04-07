@@ -125,9 +125,9 @@ function SH({ label, title }: { label: string; title: string }) {
   );
 }
 
-function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+function Card({ children, style, onMouseEnter, onMouseLeave }: { children: React.ReactNode; style?: React.CSSProperties; onMouseEnter?: React.MouseEventHandler<HTMLDivElement>; onMouseLeave?: React.MouseEventHandler<HTMLDivElement> }) {
   return (
-    <div style={{ background: T.surf, border: `1px solid ${T.border}`, borderRadius: 16, ...style }}>
+    <div style={{ background: T.surf, border: `1px solid ${T.border}`, borderRadius: 16, ...style }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {children}
     </div>
   );
