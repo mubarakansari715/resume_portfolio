@@ -300,7 +300,7 @@ function Navbar() {
             {l}
           </button>
         ))}
-        <a href="mailto:mubarakansari715@gmail.com" style={{ marginLeft: "0.75rem", padding: "0.45rem 1.2rem", borderRadius: 8, background: C.grad, color: "#fff", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", boxShadow: "0 2px 16px rgba(139,92,246,0.3)" }}>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mubarakansari715@gmail.com&su=Hiring%20Inquiry%20-%20Android%20Developer" target="_blank" rel="noreferrer" style={{ marginLeft: "0.75rem", padding: "0.45rem 1.2rem", borderRadius: 8, background: C.grad, color: "#fff", fontWeight: 700, fontSize: "0.85rem", textDecoration: "none", boxShadow: "0 2px 16px rgba(139,92,246,0.3)" }}>
           Hire Me
         </a>
       </div>
@@ -370,7 +370,7 @@ export default function Home() {
 
           {/* CTA row */}
           <div style={{ display: "flex", gap: "0.85rem", justifyContent: "center", flexWrap: "wrap", margin: "2rem 0 2.25rem", animation: "fadeUp 0.7s ease 0.4s both" }}>
-            <a href="mailto:mubarakansari715@gmail.com" style={{ padding: "0.75rem 2rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.92rem", boxShadow: "0 4px 22px rgba(139,92,246,0.4)", transition: "opacity 0.2s,transform 0.2s" }}
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mubarakansari715@gmail.com&su=Hiring%20Inquiry%20-%20Android%20Developer" style={{ padding: "0.75rem 2rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.92rem", boxShadow: "0 4px 22px rgba(139,92,246,0.4)", transition: "opacity 0.2s,transform 0.2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
               ✉ Get In Touch
@@ -578,7 +578,7 @@ export default function Home() {
             I&apos;m open to full-time roles, freelance projects, and interesting collaborations. Drop me a line!
           </p>
 
-          <a href="mailto:mubarakansari715@gmail.com" style={{ display: "inline-block", padding: "0.85rem 2.5rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.95rem", boxShadow: "0 4px 24px rgba(139,92,246,0.35)", marginBottom: "2rem", transition: "opacity 0.2s,transform 0.2s" }}
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mubarakansari715@gmail.com&su=Hiring%20Inquiry%20-%20Android%20Developer" style={{ display: "inline-block", padding: "0.85rem 2.5rem", borderRadius: 10, background: C.grad, color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "0.95rem", boxShadow: "0 4px 24px rgba(139,92,246,0.35)", marginBottom: "2rem", transition: "opacity 0.2s,transform 0.2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.85"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; (e.currentTarget as HTMLElement).style.transform = ""; }}>
             mubarakansari715@gmail.com
