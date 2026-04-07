@@ -7,12 +7,12 @@ const C = "#22d3ee";   // cyan
 const GRAD = `linear-gradient(135deg,${V},${C})`;
 
 const T = {
-  bg:      "#02020a",   // deeper black for space
-  surf:    "rgba(255,255,255,0.04)",
-  border:  "rgba(255,255,255,0.07)",
-  t1:      "#f1f5f9",
-  t2:      "#94a3b8",
-  t3:      "#475569",
+  bg:      "#02020a",
+  surf:    "rgba(255,255,255,0.07)",   // brighter cards — more readable over canvas
+  border:  "rgba(255,255,255,0.11)",   // clearer borders
+  t1:      "#f8fafc",                  // brighter heading text
+  t2:      "#cbd5e1",                  // brighter body text
+  t3:      "#64748b",                  // slightly brighter muted text
 };
 
 /* ─── DATA ───────────────────────────────────────────── */
@@ -405,7 +405,6 @@ function About() {
             {[
               { icon: "📍", label: "Location",  value: "Ahmedabad, Gujarat, India" },
               { icon: "✉️", label: "Email",     value: "mubarakansari715@gmail.com" },
-              { icon: "📞", label: "Phone",     value: "+91 9998508484" },
               { icon: "🎓", label: "Degree",    value: "B.E. IT — CGPI 8.23" },
               { icon: "🗣️", label: "Languages", value: "English · Hindi · Gujarati · Bhojpuri" },
             ].map(({ icon, label, value }) => (
@@ -611,9 +610,8 @@ function ContactSection() {
         </a>
         <div style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap" }}>
           {[
-            { label: "GitHub",          href: "https://github.com/mubarakansari715",                   c: V },
-            { label: "LinkedIn",        href: "https://www.linkedin.com/in/mubarak-ansari-2a139a148/", c: C },
-            { label: "+91 9998508484",  href: "tel:+919998508484",                                     c: "#22c55e" },
+            { label: "GitHub",   href: "https://github.com/mubarakansari715",                   c: V },
+            { label: "LinkedIn", href: "https://www.linkedin.com/in/mubarak-ansari-2a139a148/", c: C },
           ].map(({ label, href, c }) => (
             <a key={label} href={href} target="_blank" rel="noreferrer"
               style={{ padding: "0.48rem 1.15rem", borderRadius: 8, border: `1px solid ${c}28`, color: c, fontSize: "0.86rem", fontWeight: 600, textDecoration: "none", transition: "background .2s" }}
