@@ -370,11 +370,11 @@ function Stats() {
   return (
     <Reveal>
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "2.5rem 2.5rem" }}>
-        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "1px", background: T.border, borderRadius: 16, overflow: "hidden", border: `1px solid ${T.border}` }}>
+        <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "1rem" }}>
           {STATS.map(s => {
             const { ref, v } = useIV(); const n = useCnt(s.n, v);
             return (
-              <div key={s.label} ref={ref} style={{ background: T.surf, padding: "1.85rem 1rem", textAlign: "center" }}>
+              <div key={s.label} ref={ref} style={{ background: T.surf, border: `1px solid ${T.border}`, borderRadius: 16, padding: "1.85rem 1rem", textAlign: "center" }}>
                 <p style={{ margin: 0, fontSize: "2.4rem", fontWeight: 900, lineHeight: 1, background: GRAD, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{n}{s.s}</p>
                 <p style={{ margin: "0.4rem 0 0", color: T.t3, fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</p>
               </div>
